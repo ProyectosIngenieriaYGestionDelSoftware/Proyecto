@@ -5,6 +5,7 @@
       <h1 class="mb-5 text-h3">Sign Up</h1>
       <v-divider class="mb-5"</v-divider>
       <v-text-field
+        class="mb-1"
         v-model="email.value.value"
         :error-messages="email.errorMessage.value"
         type="email"
@@ -13,6 +14,7 @@
         required
       ></v-text-field>
       <v-text-field 
+        class="mb-1"
         v-model="password.value.value"
         type="password" 
         label="Create Password"
@@ -21,6 +23,7 @@
         required
       ></v-text-field>
       <v-text-field
+        class="mb-1"
         v-model="confirmPassword.value.value"
         type="password"
         label="Confirm password"
@@ -40,9 +43,9 @@
   
 
   const schema = Yup.object().shape({
-    email: Yup.string().required().email(),
-    password: Yup.string().min(6).required(),
-    confirmPassword: Yup.string().required().oneOf([Yup.ref('password')], 'Passwords do not match')
+    email: Yup.string().required('Email is a required field').email('Must be a valid email'),
+    password: Yup.string().min(6,'Must be at least 6 characters long').required('Password is a required field'),
+    confirmPassword: Yup.string().required('Confirm password is a required field').oneOf([Yup.ref('password')], 'Passwords do not match')
   });
 
   const { handleSubmit } = useForm({
