@@ -3,7 +3,16 @@
       
     <v-form ref="form" novalidate @submit.prevent="onSubmit">
       <h1 class="mb-5 text-h3">Sign Up</h1>
-      <v-divider class="mb-5"</v-divider>
+      <v-divider class="mb-5"></v-divider>
+      <v-text-field
+        class="mb-1"
+        v-model="username.value.value"
+        :error-messages="username.errorMessage.value"
+        type="text"
+        label="Username"
+        append-inner-icon="mdi-account"
+        required
+      ></v-text-field>
       <v-text-field
         class="mb-1"
         v-model="email.value.value"
@@ -58,6 +67,7 @@
 
   const schema = Yup.object().shape({
     email: Yup.string().required('Email is a required field').email('Must be a valid email'),
+    username: Yup.string().required('Username is a required field'),
     password: Yup.string().min(6,'Must be at least 6 characters long').required('Password is a required field'),
     confirmPassword: Yup.string().required('Confirm password is a required field').oneOf([Yup.ref('password')], 'Passwords do not match')
   });
@@ -67,6 +77,7 @@
   });
 
   const email = useField('email')
+  const username = useField('username')
   const password = useField('password')
   const confirmPassword = useField('confirmPassword')
 
