@@ -1,52 +1,61 @@
 <template>
   <v-card class="mx-auto px-6 py-8" max-width="400">
       
-    <v-form ref="form">
-      <h1>Sign Up</h1>
+    <v-form ref="form" novalidate @submit.prevent="onSubmit">
+      <h1 class="mb-5">Sign Up</h1>
+      <v-divider class="mb-5"</v-divider>
       <v-text-field
-        v-model="email"
-        :rules="[v => !!v || 'Email is required']"
+        v-model="email.value.value"
+        :error-messages="email.errorMessage.value"
         type="email"
         label="Email"
         append-inner-icon="mdi-email"
         required
       ></v-text-field>
       <v-text-field 
-        v-model="password"
+        v-model="password.value.value"
         type="password" 
         label="Create Password"
-        :rules="[v => !!v || 'Password is required']" 
+        :error-messages="password.errorMessage.value"
         append-inner-icon="mdi-lock"
         required
       ></v-text-field>
       <v-text-field
-        v-model="confirmPassword"
+        v-model="confirmPassword.value.value"
         type="password"
         label="Confirm password"
-        :rules="[v => !!v || 'Confirmed password is required']" 
+        :error-messages="confirmPassword.errorMessage.value" 
         append-inner-icon="mdi-lock"
         required
       ></v-text-field>
-      <v-btn class="mt-2" @click="validate" block>Submit</v-btn>
+      <v-btn class="mt-2" type="submit" block>Submit</v-btn>
     </v-form>
 
   </v-card>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    email:'',
-    password:'',
-    conformPassword:''
-  }),
+<script setup>
+  import { useField, useForm } from 'vee-validate'
+  import * as Yup from 'yup';
+  
 
-  methods: {
-    async validate () {
-        const { valid } = await this.$refs.form.validate()
+  const schema = Yup.object().shape({
+    email: Yup.string().required().email(),
+    password: Yup.string().min(6).required(),
+    confirmPassword: Yup.string().required().oneOf([Yup.ref('password')], 'Passwords do not match')
+  });
 
-        if (valid) alert('Form is valid')
-      }
-  }
-}
+  const { handleSubmit } = useForm({
+    validationSchema: schema
+  });
+
+  const email = useField('email')
+  const password = useField('password')
+  const confirmPassword = useField('confirmPassword')
+
+  const onSubmit = handleSubmit(values=>{
+      alert(JSON.stringify(values, null, 2))
+  })
+
+
 </script>

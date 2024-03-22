@@ -11,9 +11,12 @@
     "core-js": "^3.8.3",
     "pinia": "^2.1.7",
     "roboto-fontface": "*",
+    "vee-validate": "^4.12.6",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
-    "vuetify": "^3.5.11"
+    "vuetify": "^3.5.11",
+    "webfontloader": "^1.6.28",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/webfontloader": "^1.0.0",
