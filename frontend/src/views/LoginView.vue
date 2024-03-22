@@ -58,14 +58,10 @@ const onSubmit = handleSubmit(values => {
 
 <style>
 .card {
-  position: absolute;
+  margin: 5em 0;
   min-height: 250px;
   max-width: 450px;
   width: 80%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   padding: 24px;
-  box-sizing: border-box;
 }
 </style>
