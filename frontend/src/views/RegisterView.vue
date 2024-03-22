@@ -1,8 +1,8 @@
 <template>
-  <v-card class="mx-auto px-6 py-8" max-width="400">
+  <v-card class="mx-auto card">
       
     <v-form ref="form" novalidate @submit.prevent="onSubmit">
-      <h1 class="mb-5">Sign Up</h1>
+      <h1 class="mb-5 text-h3">Sign Up</h1>
       <v-divider class="mb-5"</v-divider>
       <v-text-field
         v-model="email.value.value"
@@ -59,3 +59,17 @@
 
 
 </script>
+
+<style>
+.card{
+  position:absolute;
+  min-height: 250px;
+  max-width: 450px;
+  width: 80%;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  padding:24px;
+  box-sizing: border-box;
+}
+</style>
