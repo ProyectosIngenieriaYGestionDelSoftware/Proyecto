@@ -16,19 +16,21 @@
       <v-text-field 
         class="mb-1"
         v-model="password.value.value"
-        type="password" 
+        :type="showPassword?'text':'password'"
         label="Create Password"
         :error-messages="password.errorMessage.value"
-        append-inner-icon="mdi-lock"
+        :append-inner-icon="showPassword?'mdi-eye':'mdi-eye-off'"
+        @click:append-inner="showHidePassword('password')"
         required
       ></v-text-field>
       <v-text-field
         class="mb-1"
         v-model="confirmPassword.value.value"
-        type="password"
+        :type="showConfirmPassword?'text':'password'"
         label="Confirm password"
         :error-messages="confirmPassword.errorMessage.value" 
-        append-inner-icon="mdi-lock"
+        :append-inner-icon="showConfirmPassword?'mdi-eye':'mdi-eye-off'"
+        @click:append-inner="showHidePassword('confirmPassword')"
         required
       ></v-text-field>
       <v-btn class="mt-2" type="submit" block>Submit</v-btn>
@@ -39,8 +41,20 @@
 
 <script setup>
   import { useField, useForm } from 'vee-validate'
+  import { ref } from 'vue'
   import * as Yup from 'yup';
-  
+
+  let showPassword = ref(false);
+  let showConfirmPassword = ref(false);
+
+
+  function showHidePassword(type){
+    if(type==="password"){
+      showPassword.value = !showPassword.value;
+    }else{
+      showConfirmPassword.value = !showConfirmPassword.value;
+    }
+  }
 
   const schema = Yup.object().shape({
     email: Yup.string().required('Email is a required field').email('Must be a valid email'),
