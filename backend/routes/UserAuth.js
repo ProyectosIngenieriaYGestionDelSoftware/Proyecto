@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const auth = require("./AuthService");
+const auth = require("../auth/AuthService");
+const verifyToken = require("../middlewares/VerifyTokens");
 
 router.post("/login", async function (req, res, next) {
     console.log(req.body);
@@ -11,11 +12,12 @@ router.post("/login", async function (req, res, next) {
         res.json({ token });
     } else {
         res.status(401).json({ message: "Inorrect Credentials" });
-  }
+    }
 });
 
-router.post("/logout", auth.verifyToken, async function(req, res, next){
-    auth.invalidateToken(req.headers.authorization);
+router.post("/logout", verifyToken, async function(req, res, next){
+    await auth.invalidateToken(req.headers.authorization);
+    res.json("OK");
 });
 
 module.exports = router

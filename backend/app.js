@@ -4,13 +4,13 @@ const body_parser = require('body-parser')
 const PORT = process.env.PORT || 3000; 
 const api = "/api/";
 
-const UserRegister = require("./auth/UserRegister");
-const UserAuth = require("./auth/UserAuth");
-const AuthService = require("./auth/AuthService");
+const UserRegister = require("./routes/UserRegister");
+const UserAuth = require("./routes/UserAuth");
+const verifyToken = require("./middlewares/VerifyTokens");
 
 app.use(body_parser.json())
 
-app.get(api, AuthService.verifyToken , (req, res) => {
+app.get(api,  verifyToken, (req, res) => {
     res.json({'message': 'ok'});
 });
 
