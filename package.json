@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@types/webfontloader": "^1.6.38"
+  }
+}
