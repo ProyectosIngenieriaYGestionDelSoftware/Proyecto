@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@types/webfontloader": "^1.6.38"
+    "@types/webfontloader": "^1.6.38",
+    "express": "^4.19.2",
+    "mongoose": "^8.2.3"
   }
 }

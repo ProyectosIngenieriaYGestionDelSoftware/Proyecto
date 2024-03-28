@@ -7,6 +7,13 @@ const api = "/api/";
 const UserRegister = require("./routes/UserRegister");
 const UserAuth = require("./routes/UserAuth");
 const verifyToken = require("./middlewares/VerifyTokens");
+const dbConnection = require('./adapters/mongoDB')
+
+dbConnection.once('open', () => {
+    console.log('Connection successfully established with MongoDB');
+}).on('error', (error) => {
+    console.error('Error connecting to MongoDB:', error)
+});
 
 app.use(body_parser.json())
 
