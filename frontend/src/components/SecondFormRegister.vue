@@ -1,18 +1,18 @@
 <template>
   <v-form @submit.prevent="onSubmit">
     <section class="sectionTypeUser">
-      <v-card link @click="selectItem(firstOption)" :class="{ 'outlined': clientSelected , 'non-outlined':!clientSelected }">
+      <v-card link @click="selectItem(firstOption)" :variant="clientSelected?'outlined':'elevated'">
         <v-card-title>
             <h1 class="mb-5 text-h5">Client</h1>
         </v-card-title>
-        <v-img  :width="200" src="../assets/clientImageRegister.png"></v-img>
+        <v-img  :width="175" src="../assets/clientImageRegister.png"></v-img>
       </v-card>
 
-      <v-card link @click="selectItem(secondOption)" :class="{ 'outlined': businessSelected , 'non-outlined':!businessSelected }">
+      <v-card link @click="selectItem(secondOption)" :variant="businessSelected?'outlined':'elevated'">
           <v-card-title>
               <h1 class="mb-5 text-h5">Business</h1>
           </v-card-title>
-          <v-img :width="200" src="../assets/companyImageRegister.png"></v-img>
+          <v-img :width="175" src="../assets/companyImageRegister.png"></v-img>
       </v-card>
     </section>
     <p :class="{'warningMessage':warningMessage,'non-warningMessage':!warningMessage}">You must select an account type</p>
@@ -67,14 +67,9 @@ v-form{
   flex-direction: row;
   align-items: center;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
 }
-.outlined {
-  border: 3px solid rgba(0, 0, 0, 1);
-}
-.non-outlined {
-  border: 1px solid rgba(0, 0, 0, 0);
-}
+
 .non-warningMessage{
   display: none;
 }

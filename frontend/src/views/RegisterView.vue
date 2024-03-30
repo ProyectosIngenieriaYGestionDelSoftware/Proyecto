@@ -1,7 +1,13 @@
 <template>
   <v-card class="mx-auto card">
+
+    <v-btn icon @click="goBackForm" v-if="showSecondForm" class="backButton" size="small">
+      <v-icon>
+        {{ showSecondForm ? 'mdi-arrow-left' : '' }}
+      </v-icon>
+    </v-btn>
     <v-card-title>
-      <h1 class="mb-5 text-h3">Sign Up</h1>
+      <h1 class="mb-5 text-h4">Sign Up</h1>
     </v-card-title>
     <v-divider class="mb-5"></v-divider>
     <v-card-text>
@@ -47,7 +53,7 @@
         <v-btn class="mt-2" type="submit" block>Next</v-btn>
       </v-form>
       
-      <second-form-register :class="showSecondForm?'d-block':'d-none'" @submit="(n)=>console.log(n.value)"></second-form-register>
+      <second-form-register :class="showSecondForm?'d-block':'d-none'" @submit="(value)=>onSecondSubmit(value.value)"></second-form-register>
     </v-card-text>
   </v-card>
 </template>
@@ -76,6 +82,11 @@
     }
   }
 
+  function goBackForm(){
+    showSecondForm.value = false;
+    showFirstForm.value = true;
+  }
+
   const schema = Yup.object().shape({
     email: Yup.string().required('Email is a required field').email('Must be a valid email'),
     username: Yup.string().required('Username is a required field'),
@@ -92,11 +103,17 @@
   const password = useField('password')
   const confirmPassword = useField('confirmPassword')
 
+
+
   const onFirstSubmit = handleSubmit(values=>{
-      alert(JSON.stringify(values, null, 2))
+      //console.log(values)
       showFirstForm.value = false;
       showSecondForm.value = true;
   })
+
+  function onSecondSubmit(typeUser){
+    console.log(typeUser)
+  } 
 
 
 </script>
@@ -104,6 +121,8 @@
 <style>
 .card{
   position:absolute;
+  display: flex;
+  flex-direction: column;
   min-height: 250px;
   max-width: 450px;
   width: 80%;
@@ -112,5 +131,9 @@
   transform: translate(-50%,-50%);
   padding:24px;
   box-sizing: border-box;
+}
+.backButton{
+  position: absolute;
+  float: left;
 }
 </style>
