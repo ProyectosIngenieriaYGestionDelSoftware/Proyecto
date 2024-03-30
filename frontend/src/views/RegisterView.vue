@@ -71,7 +71,7 @@
   let showConfirmPassword = ref(false);
 
   let showFirstForm = ref(true);
-  let showSecondForm = ref(true);
+  let showSecondForm = ref(false);
 
 
   function showHidePassword(type){
@@ -112,7 +112,24 @@
   })
 
   function onSecondSubmit(typeUser){
-    console.log(typeUser)
+
+    console.log(username.value)
+    const requestData = {
+      username: username.value.value,
+      password: password.value.value
+    };
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestData)
+    };
+    fetch('http://localhost:3000/api/register', requestOptions)
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => {
+        console.error('There was a problem with the network request:', error.message);
+      });;
   } 
 
 
