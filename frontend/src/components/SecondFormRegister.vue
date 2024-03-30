@@ -1,59 +1,59 @@
 <template>
   <v-form @submit.prevent="onSubmit">
-
     <section class="sectionTypeUser">
-
-      <v-card link @click="selectItem(firstOption)" :class="{ 'outlined': clientSelected }">
+      <v-card link @click="selectItem(firstOption)" :class="{ 'outlined': clientSelected , 'non-outlined':!clientSelected }">
         <v-card-title>
             <h1 class="mb-5 text-h5">Client</h1>
         </v-card-title>
-        <v-img  :width="150" src="../assets/clientImageRegister.png"></v-img>
-        
+        <v-img  :width="200" src="../assets/clientImageRegister.png"></v-img>
       </v-card>
 
-      <v-card link @click="selectItem(secondOption)" :class="{ 'outlined': businessSelected }">
+      <v-card link @click="selectItem(secondOption)" :class="{ 'outlined': businessSelected , 'non-outlined':!businessSelected }">
           <v-card-title>
-              <h1 class="mb-5 text-h5">Bussiness</h1>
+              <h1 class="mb-5 text-h5">Business</h1>
           </v-card-title>
-          <v-img :width="150" src="../assets/companyImageRegister.png"></v-img>
+          <v-img :width="200" src="../assets/companyImageRegister.png"></v-img>
       </v-card>
-
     </section>
-
-    <v-btn class="mt-2"  block type="submit">Register</v-btn>
+    <p :class="{'warningMessage':warningMessage,'non-warningMessage':!warningMessage}">You must select an account type</p>
+    <v-btn class="mt-4"  block type="submit">Register</v-btn>
   </v-form>
-
 </template>
 
 <script>
-export default {
-  props: {
-    title: String,
-    likes: Number
-  },
-  methods:{
-    onSubmit(){
-      if(this.businessSelected||this.clientSelected) console.log("asdf");
-    },
-    selectItem(item){
-      if(item==this.firstOption) {
-        if(this.businessSelected) this.businessSelected = false;
-        this.clientSelected = !this.clientSelected
-      }else{
-        if(this.clientSelected) this.clientSelected = false;
-        this.businessSelected =  !this.businessSelected;
-      }
-    }
-  },
-  data(){
-    return {
-      clientSelected:false,
-      businessSelected:false,
-      firstOption:"Client",
-      secondOption:"Business"
-    }
-  }
+import { ref } from 'vue';
 
+export default {
+  emits:['submit'],
+  setup(props, ctx) {
+    const clientSelected = ref(false);
+    const businessSelected = ref(false);
+    const warningMessage = ref(false);
+    const firstOption = "Client";
+    const secondOption = "Business";
+
+    const onSubmit = () => {
+      if (clientSelected.value || businessSelected.value) {
+        ctx.emit('submit',clientSelected);
+      } else {
+        warningMessage.value = true;
+      }
+    };
+
+    const selectItem = (item) => {
+      if (item === "Client") {
+        clientSelected.value = !clientSelected.value;
+        businessSelected.value = false;
+      } else if (item === "Business") {
+        businessSelected.value = !businessSelected.value;
+        clientSelected.value = false;
+      }
+      warningMessage.value = false;
+    };
+
+    // Devolver las propiedades y funciones que quieres exponer en el template
+    return { clientSelected, businessSelected, warningMessage, onSubmit, selectItem, firstOption, secondOption };
+  }
 }
 </script>
 
@@ -70,6 +70,17 @@ v-form{
   justify-content: space-around;
 }
 .outlined {
-  border: 1px solid rgba(0, 0, 0, 1);
+  border: 3px solid rgba(0, 0, 0, 1);
+}
+.non-outlined {
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+.non-warningMessage{
+  display: none;
+}
+
+.warningMessage{
+  display: block;
+  color: red;
 }
 </style>

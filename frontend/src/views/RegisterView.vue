@@ -47,7 +47,7 @@
         <v-btn class="mt-2" type="submit" block>Next</v-btn>
       </v-form>
       
-      <second-form-register :class="showSecondForm?'d-block':'d-none'"></second-form-register>
+      <second-form-register :class="showSecondForm?'d-block':'d-none'" @submit="(n)=>console.log(n.value)"></second-form-register>
     </v-card-text>
   </v-card>
 </template>
