@@ -63,6 +63,7 @@
   import SecondFormRegister from "../components/SecondFormRegister.vue"
 
   import { useField, useForm } from 'vee-validate'
+  import router from '../router'
   import { ref } from 'vue'
   import * as Yup from 'yup';
 
@@ -73,6 +74,7 @@
   let showFirstForm = ref(true);
   let showSecondForm = ref(false);
 
+  
 
   function showHidePassword(type){
     if(type==="password"){
@@ -112,8 +114,6 @@
   })
 
   function onSecondSubmit(typeUser){
-
-    console.log(username.value)
     const requestData = {
       username: username.value.value,
       password: password.value.value
@@ -128,7 +128,8 @@
       .then(response => response.json())
       .then(data => console.log(data))
       .catch(error => {
-        console.error('There was a problem with the network request:', error.message);
+        alert('There was a problem with the network request:', error.message);
+        router.push("/");
       });;
   } 
 
