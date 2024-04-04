@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const {mongo} = require("mongoose");
 
-const ReservationModel = mongoose.model('Reserva', {
+const ReservationModel = mongoose.model('Reservation', {
     id: mongoose.Types.ObjectId,
     id_costumer: mongoose.Types.ObjectId,
     id_business: mongoose.Types.ObjectId,
