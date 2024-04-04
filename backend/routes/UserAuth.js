@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require("../auth/AuthService");
+const auth = require("../components/auth/AuthService");
 const verifyToken = require("../middlewares/VerifyTokens");
 const bcrypt = require('bcrypt');
 

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-
-const dbURL = 'mongodb://localhost:27017/PDIGS'
+const dbURL = require('../config');
 
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
 
