@@ -1,6 +1,6 @@
-const mongoDBUserRepository = require('../adapters/MongoDBUserRepository');
-const mongoDBReservationRepository = require('../adapters/MongoDBReservationRepository');
-const mongoDBAuthRepository = require('../adapters/MongoDBAuthRepository');
+const mongoDBUserRepository = require('../../adapters/MongoDBUserRepository');
+const mongoDBReservationRepository = require('../../adapters/MongoDBReservationRepository');
+const mongoDBAuthRepository = require('../../adapters/MongoDBAuthRepository');
 
 class DatabaseService {
     constructor() {
