@@ -66,6 +66,7 @@
   import router from '../router'
   import { ref } from 'vue'
   import * as Yup from 'yup';
+  import { useAuthStore } from '../stores/auth'
 
 
   let showPassword = ref(false);
@@ -113,24 +114,13 @@
       showSecondForm.value = true;
   })
 
-  function onSecondSubmit(typeUser){
-    const requestData = {
-      username: username.value.value,
-      password: password.value.value
-    };
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestData)
-    };
-    fetch('http://localhost:3000/api/register', requestOptions)
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => {
-        alert('There was a problem with the network request:', error.message);
-        router.push("/");
-      });;
+  function onSecondSubmit(is_business){
+    const store = useAuthStore().register(
+      username.value.value,
+      password.value.value,
+      email.value.value,
+      is_business
+    )
   } 
 
 
