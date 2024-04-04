@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const {mongo} = require("mongoose");
 
 const dbURL = 'mongodb://localhost:27017/PDIGS'
 

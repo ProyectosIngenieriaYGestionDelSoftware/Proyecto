@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const {mongo} = require("mongoose");
 
 const UserModel = mongoose.model('User', {
     id: mongoose.Types.ObjectId,
@@ -7,8 +6,8 @@ const UserModel = mongoose.model('User', {
     email: String,
     phone_number: String,
     is_business: Boolean,
-    type: String,
-    services: Array
+    type: String | undefined,
+    services: Array | undefined
 });
 
 class MongoDBUserRepository {
