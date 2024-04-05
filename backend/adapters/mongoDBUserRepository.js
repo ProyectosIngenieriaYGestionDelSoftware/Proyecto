@@ -1,15 +1,30 @@
 const mongoose = require('mongoose');
-const {mongo} = require("mongoose");
 
-const UserModel = mongoose.model('User', {
+const userSchema = new mongoose.Schema( {
     id: mongoose.Types.ObjectId,
     name: String,
-    email: String,
+    email: {
+        type: String,
+        unique: true
+    },
     phone_number: String,
     is_business: Boolean,
-    type: String,
-    services: Array
+    type: {
+        type: String,
+        required: function() {
+            return this.is_business === true;
+        }
+    },
+    services: {
+        type: Array,
+        required: function() {
+            return this.is_business === true;
+        },
+        default: undefined
+    }
 });
+
+const UserModel = mongoose.model('User', userSchema)
 
 class MongoDBUserRepository {
     async createUser(userData){
