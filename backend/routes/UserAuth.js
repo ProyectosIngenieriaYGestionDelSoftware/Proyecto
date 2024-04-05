@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const auth = require("../auth/AuthService");
+const auth = require("../components/auth/AuthService");
 const verifyToken = require("../middlewares/VerifyTokens");
 const bcrypt = require('bcrypt');
 
 router.post("/login", async function (req, res, next) {
     console.log(req.body);
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     // TODO: Verificar las credenciales con la base de datos
     let dbPassword = "";
     bcrypt.compare(password, dbPassword,(err, same) => {
@@ -15,7 +15,7 @@ router.post("/login", async function (req, res, next) {
             return;
         }
         if(same){
-            const token = auth.generateToken(username, ["1","2","3"]);
+            const token = auth.generateToken(email, ["1","2","3"]);
             res.status(200).json({ token });
         }else{
             res.status(401).json({ message: "Inorrect Credentials" });
