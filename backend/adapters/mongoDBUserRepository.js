@@ -36,6 +36,11 @@ class MongoDBUserRepository {
         return UserModel.findById(userId);
     }
 
+    async getUserByEmail(email) {
+        const user = await UserModel.find({email : email});
+        return user[0];
+    }
+
     async updateUser(userId, userData) {
         return UserModel.findByIdAndUpdate(userId, userData, { new: true });
     }
