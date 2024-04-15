@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit.prevent="onSubmit">
+  <v-form @submit.prevent="onSubmit" ref="form">
     <section class="sectionTypeUser">
       <v-card link @click="selectItem(firstOption)" :variant="clientSelected?'outlined':'elevated'">
         <v-card-title>
@@ -15,6 +15,12 @@
           <v-img :width="175" src="../assets/companyImageRegister.png"></v-img>
       </v-card>
     </section>
+    <v-combobox v-if="businessSelected"
+      :rules="rulesSelectBusiness" 
+      v-model="selectedTypeBusiness"
+      label="Business class"
+      :items="Object.values(typeBusiness)"
+    ></v-combobox>
     <p :class="{'warningMessage':warningMessage,'non-warningMessage':!warningMessage}">You must select an account type</p>
     <v-btn class="mt-4"  block type="submit">Register</v-btn>
   </v-form>
@@ -22,19 +28,37 @@
 
 <script>
 import { ref } from 'vue';
+import { typeBusiness } from '../helper';
+
+
 
 export default {
   emits:['submit'],
+  data: () => ({
+    rulesSelectBusiness:[
+      value=> !!value || 'You must select a business type'
+    ]
+  }),
   setup(props, ctx) {
     const clientSelected = ref(false);
     const businessSelected = ref(false);
     const warningMessage = ref(false);
     const firstOption = "Client";
     const secondOption = "Business";
+    const selectedTypeBusiness = ref('');
 
     const onSubmit = () => {
+
+      
+
       if (clientSelected.value || businessSelected.value) {
-        ctx.emit('submit',clientSelected);
+
+        if(businessSelected.value && !selectedTypeBusiness.value){
+          //warningMessage.value = true;
+          return;
+        }
+
+        ctx.emit('submit',clientSelected,selectedTypeBusiness.value);
       } else {
         warningMessage.value = true;
       }
@@ -52,7 +76,7 @@ export default {
     };
 
     // Devolver las propiedades y funciones que quieres exponer en el template
-    return { clientSelected, businessSelected, warningMessage, onSubmit, selectItem, firstOption, secondOption };
+    return { clientSelected, businessSelected, warningMessage, onSubmit, selectItem, firstOption, secondOption, typeBusiness, selectedTypeBusiness };
   }
 }
 </script>
@@ -68,6 +92,7 @@ v-form{
   align-items: center;
   width: 100%;
   justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .non-warningMessage{
@@ -78,4 +103,6 @@ v-form{
   display: block;
   color: red;
 }
+
+
 </style>
