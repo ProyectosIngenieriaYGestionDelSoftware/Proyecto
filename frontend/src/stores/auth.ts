@@ -21,16 +21,16 @@ export const useAuthStore = defineStore('user',{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData)
               };
-              const user = await fetch('http://localhost:3000/api/register', requestOptions);
+              this.user = await fetch('http://localhost:3000/api/register', requestOptions);
 
               //add control error
               //alert('There was a problem with the network request:', error.message);
 
 
-              const userJSON = user.json();
+              const userJSON = this.user.json();
               
               this.user = userJSON;
-              localStorage.setItem('user', JSON.stringify(user));
+              localStorage.setItem('user', JSON.stringify(this.user));
               router.push("/");
 
         },
