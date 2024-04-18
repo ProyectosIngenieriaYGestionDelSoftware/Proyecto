@@ -1,8 +1,8 @@
 <template>
-  <v-card class="mx-auto card">
+  <div class="mx-auto login">
     <v-form ref="form" novalidate @submit.prevent="onSubmit">
-      <h1 class="mb-5 text-h3">Log In</h1>
-      <v-divider class="mb-5"></v-divider>
+      <!-- <h1 class="mb-5 text-h3">Log In</h1>
+      <v-divider class="mb-5"></v-divider> -->
       <v-text-field
         class="mb-1"
         v-model="username.value.value"
@@ -24,7 +24,7 @@
       ></v-text-field>
       <v-btn class="mt-2" type="submit" block>Login</v-btn>
     </v-form>
-  </v-card>
+  </div>
 </template>
 
 <script setup>
@@ -57,11 +57,15 @@ const onSubmit = handleSubmit(values => {
 </script>
 
 <style>
-.card {
-  margin: 5em 0;
-  min-height: 250px;
-  max-width: 450px;
-  width: 80%;
-  padding: 24px;
+.login {
+  width: 350px;
+  padding: 10px;
 }
+@media screen and (max-width: 400px){
+  .login {
+    min-width: 80%;
+    max-width: 100%;
+  }
+}
+
 </style>

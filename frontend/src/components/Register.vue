@@ -1,15 +1,17 @@
 <template>
-  <v-card class="mx-auto card">
+  <div class="mx-auto register">
+    <div id="buttonSection">
+      <v-btn icon @click="goBackForm" v-if="showSecondForm" class="backButton" size="small">
+        <v-icon>
+          {{ showSecondForm ? 'mdi-arrow-left' : '' }}
+        </v-icon>
+      </v-btn>
+    </div>
 
-    <v-btn icon @click="goBackForm" v-if="showSecondForm" class="backButton" size="small">
-      <v-icon>
-        {{ showSecondForm ? 'mdi-arrow-left' : '' }}
-      </v-icon>
-    </v-btn>
-    <v-card-title>
+    <!-- <v-card-title>
       <h1 class="mb-5 text-h4">Sign Up</h1>
     </v-card-title>
-    <v-divider class="mb-5"></v-divider>
+    <v-divider class="mb-5"></v-divider> -->
     <v-card-text>
       <v-form ref="form" novalidate @submit.prevent="onFirstSubmit" :class="showFirstForm?'d-block':'d-none'">
         <v-text-field
@@ -55,7 +57,7 @@
       
       <second-form-register :class="showSecondForm?'d-block':'d-none'" @submit="(value)=>onSecondSubmit(value.value)"></second-form-register>
     </v-card-text>
-  </v-card>
+  </div>
 </template>
 
 <script setup>
@@ -126,21 +128,27 @@
 </script>
 
 <style>
-.card{
-  position:absolute;
+
+.register{
   display: flex;
   flex-direction: column;
-  min-height: 250px;
-  max-width: 450px;
-  width: 80%;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
-  padding:24px;
+  width: 350px;
+  
+  padding:10px;
   box-sizing: border-box;
 }
-.backButton{
-  position: absolute;
-  float: left;
+
+#buttonSection{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: start;
+}
+
+@media screen and (max-width: 400px){
+  .register {
+    min-width: 80%;
+    max-width: 100%;
+  }
 }
 </style>

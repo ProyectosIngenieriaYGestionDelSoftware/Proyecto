@@ -1,26 +1,26 @@
 <template>
   <v-form @submit.prevent="onSubmit" ref="form">
     <section class="sectionTypeUser">
-      <v-card link @click="selectItem(firstOption)" :variant="clientSelected?'outlined':'elevated'">
+      <v-card class="card" link @click="selectItem(firstOption)" :variant="clientSelected?'outlined':'elevated'">
         <v-card-title>
-            <h1 class="mb-5 text-h5">Client</h1>
+            <p class="mb-5 subtitle-2">Client</p>
         </v-card-title>
-        <v-img  :width="175" src="../assets/clientImageRegister.png"></v-img>
+        <v-img :width="125" src="../assets/clientImageRegister.png"></v-img>
       </v-card>
 
-      <v-card link @click="selectItem(secondOption)" :variant="businessSelected?'outlined':'elevated'">
+      <v-card class="card" link @click="selectItem(secondOption)" :variant="businessSelected?'outlined':'elevated'">
           <v-card-title>
-              <h1 class="mb-5 text-h5">Business</h1>
+              <p class="mb-5 subtitle-2">Business</p>
           </v-card-title>
-          <v-img :width="175" src="../assets/companyImageRegister.png"></v-img>
+          <v-img :width="125" src="../assets/companyImageRegister.png"></v-img>
       </v-card>
     </section>
-    <v-combobox v-if="businessSelected"
+    <v-select v-if="businessSelected"
       :rules="rulesSelectBusiness" 
       v-model="selectedTypeBusiness"
       label="Business class"
       :items="Object.values(typeBusiness)"
-    ></v-combobox>
+    ></v-select>
     <p :class="{'warningMessage':warningMessage,'non-warningMessage':!warningMessage}">You must select an account type</p>
     <v-btn class="mt-4"  block type="submit">Register</v-btn>
   </v-form>
@@ -93,6 +93,17 @@ v-form{
   width: 100%;
   justify-content: space-between;
   margin-bottom: 15px;
+}
+
+
+@media screen and (max-width: 400px){
+  .sectionTypeUser{
+    flex-direction: row;
+  }
+  .card{
+      margin: 10px;
+  }
+
 }
 
 .non-warningMessage{
