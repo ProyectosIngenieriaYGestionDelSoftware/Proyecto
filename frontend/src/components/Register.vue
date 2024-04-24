@@ -32,6 +32,15 @@
           append-inner-icon="mdi-email"
           required
         ></v-text-field>
+        <v-text-field
+          class="mb-1"
+          v-model="phoneNumber.value.value"
+          :error-messages="phoneNumber.errorMessage.value"
+          type="tel"
+          label="Phone number"
+          append-inner-icon="mdi-email"
+          required
+        ></v-text-field>
         <v-text-field 
           class="mb-1"
           v-model="password.value.value"
@@ -92,9 +101,13 @@
     showFirstForm.value = true;
   }
 
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
+
   const schema = Yup.object().shape({
     email: Yup.string().required('Email is a required field').email('Must be a valid email'),
     username: Yup.string().required('Username is a required field'),
+    phoneNumber: Yup.string().required().matches(phoneRegExp, 'Phone number is not valid'),
     password: Yup.string().min(6,'Must be at least 6 characters long').required('Password is a required field'),
     confirmPassword: Yup.string().required('Confirm password is a required field').oneOf([Yup.ref('password')], 'Passwords do not match')
   });
@@ -105,6 +118,7 @@
 
   const email = useField('email')
   const username = useField('username')
+  const phoneNumber = useField('phoneNumber')
   const password = useField('password')
   const confirmPassword = useField('confirmPassword')
 
@@ -116,12 +130,14 @@
       showSecondForm.value = true;
   })
 
-  function onSecondSubmit(is_business){
+  function onSecondSubmit(is_business,typeBusiness){
     const store = useAuthStore().register(
       username.value.value,
       password.value.value,
       email.value.value,
-      is_business
+      phoneNumber.value.value,
+      is_business,
+      typeBusiness
     )
   } 
 
