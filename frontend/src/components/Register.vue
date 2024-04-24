@@ -65,6 +65,12 @@
       </v-form>
       
       <second-form-register :class="showSecondForm?'d-block':'d-none'" @submit="(value)=>onSecondSubmit(value.value)"></second-form-register>
+      <v-alert
+        v-if="showErrorAlert"
+        text="Error during the register, try again with another email"
+        color="error"
+        icon="$error"
+      ></v-alert>
     </v-card-text>
   </div>
 </template>
@@ -82,11 +88,13 @@
 
   let showPassword = ref(false);
   let showConfirmPassword = ref(false);
+  let showErrorAlert = ref(false);
 
   let showFirstForm = ref(true);
   let showSecondForm = ref(false);
 
-  
+  const currentUser = useAuthStore().user;
+  if(currentUser!=null) router.push("/");
 
   function showHidePassword(type){
     if(type==="password"){
@@ -99,6 +107,7 @@
   function goBackForm(){
     showSecondForm.value = false;
     showFirstForm.value = true;
+    showErrorAlert.value = false;
   }
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -130,15 +139,21 @@
       showSecondForm.value = true;
   })
 
-  function onSecondSubmit(is_business,typeBusiness){
-    const store = useAuthStore().register(
+  async function onSecondSubmit(is_business,typeBusiness){
+    const registerCode = await useAuthStore().register(
       username.value.value,
       password.value.value,
       email.value.value,
       phoneNumber.value.value,
       is_business,
       typeBusiness
-    )
+    );
+
+    if(registerCode==200){
+      router.push("/");
+    }else{
+      showErrorAlert.value = true;
+    }
   } 
 
 </script>

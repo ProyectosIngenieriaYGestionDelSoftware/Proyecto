@@ -16,35 +16,49 @@ export const useAuthStore = defineStore('user',{
                 email: email,
                 is_business:is_business,
                 phone_number:phone_number,
-                type:type.valueOf()
+                type:!type?"undefined":type.toString()
               };
           
-              const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData)
-              };
+            const requestOptions = {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(requestData)
+            };
               
+            try {
               const response = await fetch('http://localhost:3000/api/register', requestOptions);
-
-              if(response.status!==200) {
-                alert('There was a problem with the network request:');
+      
+              if (response.status === 200) {
+                const userData = await response.json();
+                this.user = userData;
+                localStorage.setItem('user', JSON.stringify(this.user));
+              }else{
+                localStorage.removeItem('user');
               }
 
-              //add control error
-              //alert('There was a problem with the network request:', error.message);
+              return response.status;
 
-              this.user = response.json();
-              
-              localStorage.setItem('user', JSON.stringify(this.user));
-              router.push("/");
-
+            } catch (error) {
+                alert('There was a problem with the network request: ' + error);
+            }
         },
 
-        async logout(){
-            this.user = null;
+        async logout(token:string){
+            
+        
+          const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json','authorization':token },
+          };
 
-            const req = await fetch('http://localhost:3000/api/logout');
+            const req = await fetch('http://localhost:3000/api/logout',requestOptions);
+
+            console.log(req);
+            console.log(await req.json());
+
+            if()
+            
+            this.user = null;
 
             localStorage.removeItem('user');
             router.push("/");

@@ -1,11 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <nav>
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link> | 
-        <router-link to="/auth">Register</router-link>
-      </nav>
+      <Header></Header>
       <router-view/>
     </v-main>
     <Footer></Footer>
@@ -15,12 +11,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Footer from './components/Footer.vue'
+import Header from './components/Header.vue'
+import { useAuthStore } from './stores/auth';
 
 export default defineComponent({
   name: 'App',
 
   components: {
     Footer,
+    Header
   },
 
   data () {
@@ -38,18 +37,5 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
