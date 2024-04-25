@@ -54,38 +54,47 @@ export const useAuthStore = defineStore('user',{
             const req = await fetch('http://localhost:3000/api/logout',requestOptions);
 
             console.log(req);
-            console.log(await req.json());
+            const response = await req.json();
 
-            
-            
-            this.user = null;
+            if(response=="OK"){
+              this.user = null;
 
-            //localStorage.removeItem('user');
+              localStorage.removeItem('user');  
+            }
+            
             router.push("/");
         },
 
-        async login(username:string,password:string){
+        async login(email:string,password:string){
             const requestData = {
-                username: username,
+                email: email,
                 password: password,
               };
+
+              
           
               const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData)
               };
-              const user = await fetch('http://localhost:3000/api/login', requestOptions);
 
-              //add control error
-              //alert('There was a problem with the network request:', error.message);
-
-
-              const userJSON = user.json();
-              
-              this.user = userJSON;
-              localStorage.setItem('user', JSON.stringify(user));
-              router.push("/");
+              try {
+                const response = await fetch('http://localhost:3000/api/login', requestOptions);
+        
+                if (response.status === 200) {
+                  const userData = await response.json();
+                  this.user = userData;
+                  localStorage.setItem('user', JSON.stringify(this.user));
+                }else{
+                  localStorage.removeItem('user');
+                }
+  
+                return response.status;
+  
+              } catch (error) {
+                  alert('There was a problem with the network request: ' + error);
+              }
         }
     }
 })

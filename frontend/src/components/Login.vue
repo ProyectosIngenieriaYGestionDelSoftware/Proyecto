@@ -5,11 +5,11 @@
       <v-divider class="mb-5"></v-divider> -->
       <v-text-field
         class="mb-1"
-        v-model="username.value.value"
-        :error-messages="username.errorMessage.value"
-        type="text"
-        label="Username"
-        append-inner-icon="mdi-account"
+        v-model="email.value.value"
+        :error-messages="email.errorMessage.value"
+        type="email"
+        label="Email"
+        append-inner-icon="mdi-email"
         required
       ></v-text-field>
       <v-text-field
@@ -29,6 +29,7 @@
 
 <script setup>
 import { useField, useForm } from 'vee-validate'
+import { useAuthStore } from '@/stores/auth';
 import { ref } from 'vue'
 import * as Yup from 'yup';
 
@@ -47,11 +48,11 @@ const { handleSubmit } = useForm({
   validationSchema: schema
 });
 
-const username = useField('username');
+const email = useField('username');
 const password = useField('password');
 
 const onSubmit = handleSubmit(values => {
-  alert(JSON.stringify(values, null, 2));
+  useAuthStore().login(email.value.value,password.value.value)
 });
 
 </script>

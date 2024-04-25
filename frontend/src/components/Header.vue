@@ -21,11 +21,11 @@ export default defineComponent({
         const user = computed(() => authStore.user);
 
 
-        const unsuscribe = authStore.$subscribe((mutation)=>{ })
+        const unsuscribe = authStore.$subscribe((mutation)=>{})
 
 
         const logOut = () => {
-          authStore.user = useAuthStore().logout(authStore.user);
+          authStore.user = useAuthStore().logout(user.value.token);
         }
     
     return { user , logOut };
