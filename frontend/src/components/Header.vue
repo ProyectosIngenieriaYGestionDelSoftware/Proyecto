@@ -1,26 +1,34 @@
 <template>
     <nav>
-        <router-link @click="changeView()" to="/">Home</router-link> |
-        <router-link @click="changeView()" to="/about">About</router-link> | 
-        <router-link @click="changeView()" v-if="user===null" to="/auth">Authenticate</router-link>
+        <router-link  to="/">Home</router-link> |
+        <router-link  to="/about">About</router-link> | 
+        <router-link  v-if="user===null" to="/auth">Authenticate</router-link>
+        <router-link @click="logOut()" v-if="user!==null" to="/auth">Logout</router-link>
     </nav>
 </template>
 
 <script lang='ts'>
 import { useAuthStore } from '@/stores/auth';
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 
 
 export default defineComponent({
     setup(props, ctx) {
-        let { user } = useAuthStore();     
-        useAuthStore().logout(user);
+        const authStore = useAuthStore();
+        
+        //let user = authStore.user;
+        
+        const user = computed(() => authStore.user);
 
-        const changeView = () => {
-            user = useAuthStore().user;   
-        };
+
+        const unsuscribe = authStore.$subscribe((mutation)=>{ })
+
+
+        const logOut = () => {
+          authStore.user = useAuthStore().logout(authStore.user);
+        }
     
-    return { user, changeView };
+    return { user , logOut };
   },
 })
 </script>

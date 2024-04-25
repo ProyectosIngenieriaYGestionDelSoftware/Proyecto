@@ -56,11 +56,11 @@ export const useAuthStore = defineStore('user',{
             console.log(req);
             console.log(await req.json());
 
-            if()
+            
             
             this.user = null;
 
-            localStorage.removeItem('user');
+            //localStorage.removeItem('user');
             router.push("/");
         },
 
