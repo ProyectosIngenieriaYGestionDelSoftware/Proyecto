@@ -1,23 +1,33 @@
-<template>
-  <Header />
-  
+<template>  
   <v-app>
     <v-main>
+      <Header></Header>
       <router-view/>
     </v-main>
+    <Footer></Footer>
   </v-app>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Header from './components/Header.vue';
+import Footer from './components/Footer.vue'
+import Header from './components/Header.vue'
+import { useAuthStore } from './stores/auth';
 
 export default defineComponent({
   name: 'App',
+
   components: {
-    Header,
-  }
-});
+    Footer,
+    Header
+  },
+
+  data () {
+    return {
+      //
+    }
+  },
+})
 </script>
 
 <style>

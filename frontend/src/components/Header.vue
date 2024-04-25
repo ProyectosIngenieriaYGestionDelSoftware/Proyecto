@@ -6,34 +6,17 @@
     </div>
     <div class="sections">
       <nav>
-        <router-link to="/all">Find & Book Your Appointment</router-link>
+        <!-- <router-link to="/all">Find & Book Your Appointment</router-link> -->
+        <!-- <router-link  to="/about">About</router-link> -->
       </nav>
     </div>
     <div class="auth">
-      <button @click="login">Log In / Sign Up</button>
+      <router-link  id="authenticate" v-if="user===null" to="/auth">Log In / Sign Up</router-link>
+      <router-link @click="logOut()" v-if="user!==null" to="/auth">Logout</router-link>
     </div>
   </header>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent( {
-  name: 'Header',
-  props: {
-  },
-  data() {
-  },
-  methods: {
-    goToHome() {
-      this.$router.push({ path: '/' });
-    },
-    login() {
-      alert('Log in...');
-    }
-  }
-});
-</script>
 
 <style scoped>
 .header {
@@ -80,12 +63,67 @@ export default defineComponent( {
   }
 }
 
-.auth button {
+#authenticate {
   padding: 10px 20px;
   background-color: #218283;
   color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+</style>
+
+
+<script lang='ts'>
+import { useAuthStore } from '@/stores/auth';
+import { defineComponent, computed } from 'vue'
+import router from '../router'
+
+
+export default defineComponent({
+    setup(props, ctx) {
+        const authStore = useAuthStore();
+        
+        //let user = authStore.user;
+        
+        const user = computed(() => authStore.user);
+
+
+        const unsuscribe = authStore.$subscribe((mutation)=>{})
+
+
+        const logOut = () => {
+          authStore.user = useAuthStore().logout(user.value.token);
+        }
+
+        const goToHome = () => {
+          router.push({ path: '/' });
+        }
+    
+    return { user , logOut, goToHome };
+  },
+})
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
