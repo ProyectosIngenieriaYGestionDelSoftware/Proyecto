@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="brand" @click="goToHome">
-      <img v-bind:src="require('../assets/logo.png')" alt="Business Logo">
+      <img v-bind:src="require('../assets/cab_logo.png')" alt="Business Logo">
       <h3>Click & Book</h3>
     </div>
     <div class="sections">
@@ -41,7 +41,7 @@ export default defineComponent( {
   justify-content: space-between;
   align-items: center;
   padding: 0.2em 1em;
-  background-color: #f0f0f0;
+  background-color: #0d1f29;
 }
 
 .brand {
@@ -54,7 +54,9 @@ export default defineComponent( {
   }
 
   h3{
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding-left: 0.5em;
+    font-family: 'Boldhead';
+    color:#45b4a8;
   }
 }
 
@@ -65,7 +67,12 @@ export default defineComponent( {
   
   nav a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #45b4a8;
+  }
+
+  nav router-link :hover{
+    font-weight: bold;
+    color: #45b4a8,;
   }
   
   nav a.router-link-exact-active {
@@ -75,8 +82,8 @@ export default defineComponent( {
 
 .auth button {
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: #218283;
+  color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
