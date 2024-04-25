@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = require("../config").SECRET_KEY;
+const SECRET_KEY = require("../../config").SECRET_KEY;
 
-const invalid_tokens = require("../utils/TokenBlackList");
+const invalid_tokens = require("../../utils/TokenBlackList");
 
 const generateToken = (user, permissions) => {
 return jwt.sign({data:user, permissions: permissions}, SECRET_KEY, {expiresIn: 60 * 60 /* 1 hora */ });
