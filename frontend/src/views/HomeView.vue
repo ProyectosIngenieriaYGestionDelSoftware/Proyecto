@@ -36,18 +36,34 @@
       <AdCarousel/>
     </div>
   </div>
+
+  <v-dialog v-model="showChat">
+    <ChatView style="justify-self: center;"></ChatView>
+  </v-dialog>
+
+  <button @click="showChat = !showChat"> Show Chat</button>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { ref } from 'vue';
 import AdCarousel from '../components/AdCarousel.vue';
+import ChatView from '@/views/ChatView.vue';
 
-export default defineComponent({
+export default {
   name: 'HomeView',
   components: {
-    AdCarousel
+    AdCarousel,
+    ChatView
+  },
+  setup(){
+    const showChat = ref(false);
+
+    return {
+      showChat
+    }
   }
-});
+  
+};
 </script>
 
 <style scoped>

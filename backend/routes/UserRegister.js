@@ -56,7 +56,7 @@ router.post("/register", async function(req, res, next){
       res.status(200)
         .json({
           message: "Successfully registered user",
-          username: username,
+          user: user,
           token: auth.generateToken(user._id,[]),
         });
     })

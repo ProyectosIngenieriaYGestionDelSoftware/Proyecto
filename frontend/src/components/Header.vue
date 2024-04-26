@@ -10,6 +10,9 @@
         <!-- <router-link  to="/about">About</router-link> -->
       </nav>
     </div>
+    <div>
+      <router-link to="/chat">Chat</router-link>
+    </div>
     <div class="auth">
       <router-link  id="authenticate" v-if="user===null" to="/auth">Log In / Sign Up</router-link>
       <router-link @click="logOut()" v-if="user!==null" to="/auth">Logout</router-link>
