@@ -6,8 +6,12 @@ const api = "/api/";
 
 const UserRegister = require("./routes/UserRegister");
 const UserAuth = require("./routes/UserAuth");
+const Chat = require('./routes/Chat');
 const verifyToken = require("./middlewares/VerifyTokens");
-const dbConnection = require('./adapters/mongoDB')
+const dbConnection = require('./adapters/mongoDB');
+
+const socket = require('./socket');
+const chat = require('./components/chat')
 
 dbConnection.once('open', () => {
     console.log('Connection successfully established with MongoDB');
@@ -23,7 +27,10 @@ app.get(api,  verifyToken, (req, res) => {
 
 app.use(api, UserRegister);
 app.use(api,UserAuth);
+app.use(api + 'chat/',Chat);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+
+socket.createWS(server, chat.onMessage);
