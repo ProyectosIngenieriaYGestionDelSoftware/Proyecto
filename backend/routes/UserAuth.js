@@ -8,10 +8,12 @@ const user_db = db.getUserRepository();
 const auth_db = db.getAuthRepository();
 
 router.post("/login", async function (req, res, next) {
-    console.log(req.body);
     const { email, password } = req.body;
-    // TODO: Verificar las credenciales con la base de datos
     const user = await user_db.getUserByEmail(email);
+    if(user === undefined){
+        res.status(404).json({message : "User not found"});
+        return;
+    }
     const auht_user = await auth_db.getUserAuth(user._id);
     const encrypted = auht_user.password;
     
