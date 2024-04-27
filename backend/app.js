@@ -6,6 +6,7 @@ const api = "/api/";
 
 const UserRegister = require("./routes/UserRegister");
 const UserAuth = require("./routes/UserAuth");
+const ReservationManager = require("./routes/ReservationManager");
 const verifyToken = require("./middlewares/VerifyTokens");
 const dbConnection = require('./adapters/mongoDB')
 
@@ -22,7 +23,8 @@ app.get(api,  verifyToken, (req, res) => {
 });
 
 app.use(api, UserRegister);
-app.use(api,UserAuth);
+app.use(api, UserAuth);
+app.use(api, ReservationManager);
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);

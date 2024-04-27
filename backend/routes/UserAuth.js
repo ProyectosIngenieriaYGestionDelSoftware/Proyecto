@@ -12,8 +12,8 @@ router.post("/login", async function (req, res, next) {
     const { email, password } = req.body;
     // TODO: Verificar las credenciales con la base de datos
     const user = await user_db.getUserByEmail(email);
-    const auht_user = await auth_db.getUserAuth(user._id);
-    const encrypted = auht_user.password;
+    const auth_user = await auth_db.getUserAuth(user._id);
+    const encrypted = auth_user.password;
     
     bcrypt.compare(password, encrypted,(err, same) => {
         if(err){

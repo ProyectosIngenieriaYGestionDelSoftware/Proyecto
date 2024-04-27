@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const AuthModel = mongoose.model('Auth', {
     _id: mongoose.Types.ObjectId,
-    name: String,
     password: String
 });
 
