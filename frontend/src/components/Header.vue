@@ -51,6 +51,7 @@
   nav a {
     font-weight: bold;
     color: #45b4a8;
+   
   }
 
   nav router-link :hover{
@@ -70,6 +71,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  text-decoration: none;  
 }
 </style>
 

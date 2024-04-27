@@ -38,7 +38,7 @@
           :error-messages="phoneNumber.errorMessage.value"
           type="tel"
           label="Phone number"
-          append-inner-icon="mdi-email"
+          append-inner-icon="mdi-phone"
           required
         ></v-text-field>
         <v-text-field 

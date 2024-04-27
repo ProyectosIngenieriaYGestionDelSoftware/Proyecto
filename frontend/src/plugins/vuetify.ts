@@ -12,5 +12,16 @@ export default createVuetify(
   {
     components,
     directives,
+    theme:{
+      themes:{
+        light:{
+          dark:false,
+          colors:{
+            primary:'#218283',
+            secondary:'#0d1f29'
+          }
+        }
+      }
+    }
   }
 )
