@@ -58,7 +58,8 @@ export default {
           return;
         }
 
-        ctx.emit('submit',clientSelected,selectedTypeBusiness.value);
+
+        ctx.emit('submit', businessSelected.value, selectedTypeBusiness.value);
       } else {
         warningMessage.value = true;
       }
