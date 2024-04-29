@@ -51,6 +51,7 @@ export const useAuthStore = defineStore('user',{
             headers: { 'Content-Type': 'application/json','authorization':token },
           };
 
+          try{
             const req = await fetch('http://localhost:3000/api/logout',requestOptions);
 
             const response = await req.json();
@@ -59,6 +60,12 @@ export const useAuthStore = defineStore('user',{
             this.user = null;
             localStorage.removeItem('user');  
             return response;
+          }catch(error){
+            this.user = null;
+            localStorage.removeItem('user');
+            console.log('There was a problem with the network request: ' + error);
+          }
+            
         },
 
         async login(email:string,password:string){
@@ -89,7 +96,7 @@ export const useAuthStore = defineStore('user',{
                 return response.status;
   
               } catch (error) {
-                  alert('There was a problem with the network request: ' + error);
+                  console.log('There was a problem with the network request: ' + error);
               }
         }
     }
