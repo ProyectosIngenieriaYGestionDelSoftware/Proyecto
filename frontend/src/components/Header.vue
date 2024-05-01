@@ -6,7 +6,7 @@
     </div>
     <div class="sections">
       <nav>
-        <!-- <router-link to="/all">Find & Book Your Appointment</router-link> -->
+        <router-link to="/all-businesses">Search Businesses Here!</router-link>
         <!-- <router-link  to="/about">About</router-link> -->
       </nav>
     </div>
