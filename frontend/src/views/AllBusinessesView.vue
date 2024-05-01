@@ -9,6 +9,10 @@
         <nav>
           <input class="nav-filter" type="text" placeholder="Search business..." v-model="searchTerm" @input="filterItems">
         </nav>
+
+        <div v-if="filteredItems.length === 0" class="no-matches">
+            <span class="warning-icon">&#9888;</span> No matches found.
+        </div>
   
         <ul class="businesses-boxes">
           <li class="business-box" v-for="item in filteredItems" :key="item.business_name" @click="navigateToBusiness(item)">
@@ -70,7 +74,7 @@ export default defineComponent({
         item.business_name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     },
-    
+
     navigateToBusiness(item: Business): void {
       // Construye la URL basada en la información del negocio
       const url = `/business/${encodeURIComponent(item.business_name)}`;
@@ -85,31 +89,38 @@ export default defineComponent({
 </script>
 
   
-  <style scoped>
-  .all_businesses-container {
+<style scoped>
+.all_businesses-container {
     padding-top: 1em;
     background-color: #f0f0f0;
-  }
+}
 
-  nav {
+nav {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     padding: 2em 6em;
-  }
-  .nav-filter {
+}
+.nav-filter {
     border-radius: 20px;
     border: 3px solid #2c3e50;
     transition: border-color 0.3s ease;
     text-indent: 1em;
     width: 20vw;
     height: 5vh;
-  }
-  .nav-filter:focus {
+}
+.nav-filter:focus {
     outline: none;
     border-radius: 20px;
     border: 3px solid #45b4a8;
-  }
+}
+
+.no-matches {
+    margin: 25vh;
+    font-size: 3em;
+    color: red; 
+}
+  
   
 .businesses-boxes {
     display: grid;
