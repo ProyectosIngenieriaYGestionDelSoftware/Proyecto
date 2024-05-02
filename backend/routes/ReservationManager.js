@@ -17,17 +17,34 @@ router.post("/new-reservation", async function (req, res, next){
             status: status
         });
         console.log(reservation);
+
+        res.status(201).json({ message: "New reservation successfully created" });
     } catch (error) {
         console.warn(error);
         res.status(500).json({ message: error });
     }
 });
 
-router.post("/delete-reservation", async function (req, res, next) {
-    const { _id } = req.body;
+router.put("/update-reservation", async function (req, res, next) {
+    const { id, newData } = req.body;
 
     try {
-        await reservation_db.deleteReservation(_id);
+        await reservation_db.updateReservation(id, newData);
+
+        res.status(200).json({ message: "Reservation correctly updated" });
+    } catch (error) {
+        console.warn(error);
+        res.status(500).json( { message: error });
+    }
+});
+
+router.delete("/delete-reservation", async function (req, res, next) {
+    const { id } = req.body;
+
+    try {
+        await reservation_db.deleteReservation(id);
+
+        res.status(200).json({ message: "Reservation successfully deleted" });
     } catch (error) {
         console.warn(error);
         res.status(500).json({ message: error });
