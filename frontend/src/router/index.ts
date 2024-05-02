@@ -21,10 +21,15 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/AllBusinessesView.vue')
   },
   {
-    path: '/booking',
+    path: '/business/:id',
+    name: 'business',
+    component: () => import('@/views/BusinessView.vue')
+  },
+  {
+    path: '/business/booking/:id',
     name: 'booking',
     component: () => import('@/views/BookingView.vue')
-  }
+  },
 ]
 
 const router = createRouter({

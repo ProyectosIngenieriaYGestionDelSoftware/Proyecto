@@ -1,16 +1,20 @@
 <template>
   <div class="booking-view">
-    <h2>Booking</h2>
+    <h1 class="booking-title">Booking</h1>
     
-    <input class="booking-calendar" type="date" v-model="selectedDate">
+    <div class="booking-inputs">
+      <input class="booking-calendar" type="date" v-model="selectedDate">
 
-    <select v-model="selectedTime">
-      <option v-for="time in times" :key="time" :value="time">{{ time }} placeholder</option>
-    </select>
+      <select class="custom-select" v-model="selectedTime">
+        <option value="" disabled selected>Select time</option>
+        <option v-for="time in times" :key="time" :value="time">{{ time }}</option>
+      </select>
 
-    <select v-model="selectedPerson">
-      <option v-for="person in people" :key="person.id" :value="person.name">{{ person.name }}</option>
-    </select>
+      <select class="custom-select" v-model="selectedPerson">
+        <option value="" disabled selected>Select Staff</option>
+        <option v-for="person in people" :key="person.id" :value="person.name">{{ person.name }}</option>
+      </select>
+    </div>  
 
     <button @click="bookAppointment">Book</button>
   </div>
@@ -49,24 +53,69 @@ export default {
 
 <style scoped>
 .booking-view {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.booking-title {
+  font-family: 'Alfa Slab One', sans-serif;
+  color:#45b4a8;
+  margin: 2em 0 1em 0;
+}
+
+.booking-inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: start flex;
+  
+  font-family: 'Playtipi';
+  font-size: large;
+}
+
+.booking-inputs * {
+  margin-bottom: 2em;
+}
+
+.booking-calendar {
+  color: #2c3e50;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.booking-calendar::selection {
+  background-color: #45b4a8;
+  color: #fff;
+}
+
+.custom-select {
+  color: #2c3e50;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.custom-select option {
+  color: #2c3e50;
+  background-color: #f0f0f0;
 }
 
 button {
-  margin-top: 10px;
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: #fff;
+  padding: 10px 20px;
+  background-color: #45b4a8;
+  color: #ffffff;
   border: none;
-  border-radius: 3px;
+  border-radius: 5px;
   cursor: pointer;
+  text-decoration: none;  
+  width: auto;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #145354;
 }
 </style>
