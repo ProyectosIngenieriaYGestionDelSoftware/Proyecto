@@ -7,6 +7,7 @@
     <div class="sections">
       <nav>
         <router-link to="/all-businesses">Search Businesses Here!</router-link>
+        <router-link to="/booking">Link Auxiliar</router-link>
         <!-- <router-link  to="/about">About</router-link> -->
       </nav>
     </div>
