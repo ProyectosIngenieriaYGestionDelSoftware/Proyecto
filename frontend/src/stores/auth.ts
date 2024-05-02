@@ -1,14 +1,51 @@
 import { defineStore} from "pinia";
 import router from '../router'
-import { typeBusiness } from "@/helper";
+import { typeBusiness, userRequest } from "@/helper";
 
 export const useAuthStore = defineStore('user',{
-    state:() => ({
-        //control if localstorage is null
-        user: JSON.parse(localStorage.getItem('user')!)
+    state: () => ({
+        user: null as userRequest | null
     }),
 
     actions: {
+
+      async initUser() {
+
+        this.user = JSON.parse(localStorage.getItem('user')!);
+
+        let requestOptions;
+      
+        if(this.user!=null){
+          requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json','authorization':this.user.token },
+          };
+        }else{
+          return;
+        }
+
+      
+        fetch('http://localhost:3000/api/checkToken',requestOptions)
+          .then(response => {
+            
+            if(!response.ok) { 
+              this.user = null;
+              localStorage.removeItem('user');
+              console.log("Invalid token");
+            }
+          })
+          
+          .catch(error =>  {
+            console.log('There was a problem with the network request: ' + error);
+            this.user = null;
+            localStorage.removeItem('user');
+        });
+    
+        
+          
+      },
+        
+
         async register(username:string,password:string,email:string,phone_number:string,is_business:boolean,type:typeBusiness){
             const requestData = {
                 username: username,
@@ -101,3 +138,4 @@ export const useAuthStore = defineStore('user',{
         }
     }
 })
+

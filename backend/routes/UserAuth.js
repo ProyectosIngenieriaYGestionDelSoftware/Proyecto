@@ -39,6 +39,10 @@ router.post("/logout", verifyToken, async function(req, res, next){
     res.json("OK");
 });
 
+router.get('/checkToken',verifyToken,(_,res)=> {
+    res.status(200).json('ok');
+});
+
 module.exports = router
 
 
