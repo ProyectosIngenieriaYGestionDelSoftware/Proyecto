@@ -24,6 +24,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/business/:id',
     name: 'business',
     component: () => import('@/views/BusinessView.vue')
+  },
+  {
+    path: '/business/edit',
+    name: 'business-edit',
+    component: () => import('@/views/BusinessSetupView.vue')
   }
 ]
 

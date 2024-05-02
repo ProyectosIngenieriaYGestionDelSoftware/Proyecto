@@ -1,12 +1,16 @@
-export enum typeBusiness {
+export enum TypeBusiness {
     PERSONAL_CARE = "Personal Care",
     RESTAURANT = "Restaurant",
     RENTING_CAR = "Renting Car",
     HEALTH_CARE = "Medical Appointments"
 }
 
-export interface userRequest {
+export interface UserRequest {
     message:string,
-    username:string,
+    user:User,
     token:string
+}
+
+export interface User {
+    
 }

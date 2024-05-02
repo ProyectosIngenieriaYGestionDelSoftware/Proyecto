@@ -1,10 +1,10 @@
 import { defineStore} from "pinia";
 import router from '../router'
-import { typeBusiness, userRequest } from "@/helper";
+import { TypeBusiness, UserRequest } from "@/helper";
 
 export const useAuthStore = defineStore('user',{
     state: () => ({
-        user: null as userRequest | null
+        user: null as UserRequest | null
     }),
 
     actions: {
@@ -46,7 +46,7 @@ export const useAuthStore = defineStore('user',{
       },
         
 
-        async register(username:string,password:string,email:string,phone_number:string,is_business:boolean,type:typeBusiness){
+        async register(username:string,password:string,email:string,phone_number:string,is_business:boolean,type:TypeBusiness){
             const requestData = {
                 username: username,
                 password: password,
