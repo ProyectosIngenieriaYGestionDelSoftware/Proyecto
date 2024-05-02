@@ -4,3 +4,9 @@ export enum typeBusiness {
     RENTING_CAR = "Renting Car",
     HEALTH_CARE = "Medical Appointments"
 }
+
+export interface userRequest {
+    message:string,
+    username:string,
+    token:string
+}

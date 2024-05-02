@@ -22,6 +22,10 @@ export default defineComponent({
     Header
   },
 
+  setup(props, ctx) {
+    useAuthStore().initUser()
+  },
+
   data () {
     return {
       //

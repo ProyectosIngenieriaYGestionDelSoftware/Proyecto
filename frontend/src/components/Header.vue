@@ -95,7 +95,7 @@ export default defineComponent({
 
 
         const logOut = () => {
-          authStore.user = useAuthStore().logout(user.value.token);
+          if(user!==null) useAuthStore().logout(user.value!.token);
         }
 
         const goToHome = () => {
