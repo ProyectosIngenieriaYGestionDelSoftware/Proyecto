@@ -62,6 +62,7 @@ export default {
 .booking-title {
   font-family: 'Alfa Slab One', sans-serif;
   color:#45b4a8;
+  text-shadow: 1px 1px 1px #2c3e50;
   margin: 2em 0 1em 0;
 }
 
