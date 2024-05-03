@@ -1,22 +1,24 @@
 <template>
   <div class="booking-view">
-    <h1 class="booking-title">Booking</h1>
-    
-    <div class="booking-inputs">
-      <input class="booking-calendar" type="date" v-model="selectedDate">
+    <form class="booking-form">
+      <h1 class="booking-title">Booking</h1>
+      
+      <div class="booking-inputs">
+        <input class="booking-calendar" type="date" v-model="selectedDate">
 
-      <select class="custom-select" v-model="selectedTime">
-        <option value="" disabled selected>Select time</option>
-        <option v-for="time in times" :key="time" :value="time">{{ time }}</option>
-      </select>
+        <select class="custom-select" v-model="selectedTime">
+          <option value="" disabled selected>Select time</option>
+          <option v-for="time in times" :key="time" :value="time">{{ time }}</option>
+        </select>
 
-      <select class="custom-select" v-model="selectedPerson">
-        <option value="" disabled selected>Select Staff</option>
-        <option v-for="person in people" :key="person.id" :value="person.name">{{ person.name }}</option>
-      </select>
-    </div>  
+        <select class="custom-select" v-model="selectedPerson">
+          <option value="" disabled selected>Select Staff</option>
+          <option v-for="person in people" :key="person.id" :value="person.name">{{ person.name }}</option>
+        </select>
+      </div>  
 
-    <button @click="bookAppointment">Book</button>
+      <button @click="bookAppointment">Book</button>
+    </form>
   </div>
 </template>
 
@@ -57,13 +59,22 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
+}
+
+.booking-form {
+  background-size: contain;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 1em;
+  align-self: center;
 }
 
 .booking-title {
   font-family: 'Alfa Slab One', sans-serif;
   color:#45b4a8;
   text-shadow: 1px 1px 1px #2c3e50;
-  margin: 2em 0 1em 0;
 }
 
 .booking-inputs {
