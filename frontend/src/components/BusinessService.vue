@@ -3,7 +3,7 @@
         <h3 class="business-service-title"> {{ business.business_service_title }} </h3>
         <p class="business-service-description"> {{ business.business_service_description }} </p>
         <p class="business-service-price"> {{ business.business_service_price }} </p>
-        <button class="btn btn-primary">Book now</button>
+        <button class="btn btn-primary" @click="navigateToBooking">Book now</button>
     </div>
   </template>
   
@@ -16,6 +16,13 @@
       business: {
         type: Object,
         required: true
+      },
+    },
+
+    methods: {
+      navigateToBooking() {
+        const url = `/business/booking/${encodeURIComponent(this.business.business_service_title)}`;
+        window.location.href = url;
       }
     }
   });
