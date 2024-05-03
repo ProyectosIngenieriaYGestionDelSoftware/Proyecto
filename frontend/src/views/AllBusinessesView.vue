@@ -1,10 +1,13 @@
 <template>
     <div class="all_businesses-container">
-      <!--
+      <h1 class="bussiness-services-title"> Businesses </h1>
+      
       <div class="carousel-container">
         <AdCarousel />
       </div>
-      -->
+
+      <hr> </hr>
+      
       <div class="businesses-container">
         <nav>
           <input class="nav-filter" type="text" placeholder="Search business..." v-model="searchTerm" @input="filterItems">
@@ -76,9 +79,7 @@ export default defineComponent({
     },
 
     navigateToBusiness(item: Business): void {
-      // Construye la URL basada en la información del negocio
       const url = `/business/${encodeURIComponent(item.business_name)}`;
-      // Navega a la URL
       window.location.href = url;
     }
   },
@@ -95,11 +96,17 @@ export default defineComponent({
     background-color: #f0f0f0;
 }
 
+.all_businesses-container h1 {
+  font-family: 'Alfa Slab One', sans-serif;
+  color:#45b4a8;
+  text-shadow: 1px 1px 1px #2c3e50;
+}
+
 nav {
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    padding: 2em 6em;
+    padding: 1em 6em;
 }
 .nav-filter {
     border-radius: 20px;
@@ -140,12 +147,19 @@ nav {
 }
 
 .carousel-container {
-    padding-bottom: 6em;
+    padding: 2em 0;
     border-color: #2c3e50;
 }
 
 .va-carousel__slide {
     font-size: 48px;
+}
+
+hr {
+  display: flex;
+  align-self: center;
+  height: 3px;
+  background-image: linear-gradient(to right, transparent, #45b4a8, transparent);
 }
 </style>
   

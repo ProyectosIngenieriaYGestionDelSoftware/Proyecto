@@ -6,7 +6,7 @@
     </div>
     <div class="sections">
       <nav>
-        <router-link to="/all-businesses">Search Businesses Here!</router-link>
+        <router-link to="/all-businesses">Find Businesses</router-link>
         <!-- <router-link  to="/about">About</router-link> -->
       </nav>
     </div>
@@ -16,65 +16,6 @@
     </div>
   </header>
 </template>
-
-
-<style scoped>
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.2em 1em;
-  background-color: #0d1f29;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-
-  img {
-    width: auto;
-    height: 3em;
-  }
-
-  h3{
-    padding-left: 0.5em;
-    font-family: 'Boldhead';
-    color:#45b4a8;
-  }
-}
-
-.sections {
-  nav {
-    padding: 0px;
-  }
-  
-  nav a {
-    font-weight: bold;
-    color: #45b4a8;
-   
-  }
-
-  nav router-link :hover{
-    font-weight: bold;
-    color: #45b4a8,;
-  }
-  
-  nav a.router-link-exact-active {
-    color: #42b983;
-  }
-}
-
-#authenticate {
-  padding: 10px 20px;
-  background-color: #218283;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;  
-}
-</style>
-
 
 <script lang='ts'>
 import { useAuthStore } from '@/stores/auth';
@@ -107,25 +48,84 @@ export default defineComponent({
 })
 </script>
 
-<style>
+
+<style scoped>
+.header {
+  /*display: flex;
+  justify-content: space-between;*/
+  display: grid;
+  grid-template-columns: 6fr 2fr 1fr;
+  align-items: center;
+  padding: 0.2em 1em;
+  background-color: #0d1f29;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: auto;
+    height: 3em;
+  }
+
+  h3{
+    padding-left: 0.5em;
+    font-family: 'Boldhead';
+    color:#45b4a8;
+  }
+}
+
+.sections {
+  nav {
+    padding: 0px;
+  }
+  
+  nav a {
+    font-family: 'Lilita One';
+    font-size: large;
+    padding: 30px;
+    color: #45b4a8;
+    text-decoration: none; 
+   
+  }
+
+  nav a:hover{
+    color: #145354,;
+    text-decoration: underline; 
+  }
+  
+  nav a.router-link-exact-active {
+    color: #ffffff;
+    text-decoration: underline; 
+  }
+
+}
+
+.auth {
+  background-color: #218283;
+  padding: 5px 0;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none; 
+}
+
+.auth a {
+  color: #ffffff;
+  text-decoration: none; 
+}
+
+.auth:hover {
+  background-color: #145354;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
