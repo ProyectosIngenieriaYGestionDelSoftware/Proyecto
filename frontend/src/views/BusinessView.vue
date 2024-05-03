@@ -1,11 +1,11 @@
 <template>
     <div class="business-services">
-      <div class="business-first-layer">
-        <h1> Services </h1>
-        <nav>
-          <input class="nav-filter" type="text" placeholder="Search service..." v-model="searchTerm" @input="filterItems">
-        </nav>
-      </div>
+      <nav>
+        <input class="nav-filter" type="text" placeholder="Search service..." v-model="searchTerm" @input="filterItems">
+      </nav>
+        
+      <h1 class="bussiness-services-title"> Services </h1>
+        
         <div v-if="filteredItems.length === 0" class="no-matches">
             <span class="warning-icon">&#9888;</span> No matches found.
         </div>
@@ -78,21 +78,15 @@ import BusinessService from '../components/BusinessService.vue';
   <style scoped>
   .business-services {
     margin-top: 20px;
-  }
-
-  .business-first-layer {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
-    width: 50%;
-    margin: 0 auto;
   }
 
   .business-services h1 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
+    font-family: 'Alfa Slab One', sans-serif;
+    color:#45b4a8;
+    text-shadow: 1px 1px 1px #2c3e50;
   }
 
   .business-services-container {
@@ -130,6 +124,25 @@ import BusinessService from '../components/BusinessService.vue';
     color: #ff5722;
     /* or any other color you prefer */
   }
+
+nav {
+  align-self: flex-end;
+  padding: 1em 1em 0 0;
+}
+
+.nav-filter {
+    border-radius: 20px;
+    border: 3px solid #2c3e50;
+    transition: border-color 0.3s ease;
+    text-indent: 1em;
+    width: 20vw;
+    height: 5vh;
+}
+.nav-filter:focus {
+    outline: none;
+    border-radius: 20px;
+    border: 3px solid #45b4a8;
+}
 
   @media screen and (max-width: 768px){
     .business-first-layer {

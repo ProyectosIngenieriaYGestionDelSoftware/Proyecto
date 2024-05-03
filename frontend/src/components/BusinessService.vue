@@ -38,22 +38,36 @@
   }
 
   .business-service-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
+    font-family: 'Lilita One', sans-serif;
+    color: #2c3e50;
     margin-bottom: 10px;
   }
 
   .business-service-description {
-    font-size: 16px;
+    font-family: 'Platype', sans-serif;
     color: #666;
     margin-bottom: 10px;
   }
 
   .business-service-price {
     font-size: 20px;
-    color: #45b4a8;
+    color: #2c3e50;
     font-weight: bold;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #45b4a8;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;  
+    width: auto;
+  }
+  
+  button:hover {
+    background-color: #145354;
   }
 
 </style>
