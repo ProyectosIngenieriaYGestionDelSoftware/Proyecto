@@ -4,7 +4,7 @@
       <v-progress-circular indeterminate color="white"></v-progress-circular>
     </v-overlay>
 
-    <AddService />
+   <AddService :dialogIsActive="dialogIsActive" @close-dialog="closeDialog" @service-added="serviceAdded" />
 
     <section class="ma-8">
         <v-table>
@@ -28,7 +28,7 @@
         </v-table>
 
         <div class="buttons">
-            <v-btn @click="" color="green" class="mr-4" >Add service</v-btn>
+            <v-btn @click="openAddServiceDialog" color="green" class="mr-4" >Add service</v-btn>
             <v-btn color="red">Remove all services</v-btn>
         </div>
     </section>
@@ -41,6 +41,7 @@
 
 <script>
 import { useAuthStore } from '@/stores/auth';
+import { ref } from 'vue';
 import router from '../router';
 import AddService from '@/components/AddService.vue';
 
@@ -49,15 +50,32 @@ import AddService from '@/components/AddService.vue';
         components: {AddService},
 
         setup(){
+
             const user = useAuthStore().user;
             let services = [];
             let loading = true;
+            const dialogIsActive = ref(false);
+
             if (user===null || !user.user.is_business){
                 router.push("/");
             }else{
                 services = user.user.services;
                 loading = false;
             }
+
+            function openAddServiceDialog() {
+                dialogIsActive.value = true;
+            }
+
+            function closeDialog() {
+                dialogIsActive.value = false;
+            }
+
+            function serviceAdded(name,description,duration){
+                console.log(name,description,duration)
+            }
+
+
             return {
                 services,
                 loading,
@@ -66,10 +84,13 @@ import AddService from '@/components/AddService.vue';
                     { key: 'description', label: 'Description' },
                     { key: 'duration', label: 'Duration (minutes)' }
                 ],
+                dialogIsActive,
+                openAddServiceDialog,
+                closeDialog,
+                serviceAdded
             };
         }
-
-        
+ 
     }
     
 </script>

@@ -1,6 +1,6 @@
 <template>
-    <v-dialog persistent max-width="400" v-model="isActive">
-        <v-form @submit.prevent="handleSubmit"> 
+    <v-dialog persistent max-width="400" v-model="dialog">
+        <v-form ref="formRef" @submit.prevent="handleSubmit"> 
 
         
             <v-card title="Add Service" > 
@@ -35,7 +35,7 @@
                     <v-btn
                         color="red"
                         text="Exit"
-                        @click="isActive = false"
+                        @click="closeDialog"
                     ></v-btn>
                 </v-card-actions>
             </v-card>
@@ -45,19 +45,13 @@
 
 <script>
 
+    import { ref , watch, onMounted  } from 'vue';
+
 
     export default {
-        props:["submit"],
-        setup(props, ctx) {
-        
 
-        
-        },
+        props:['dialogIsActive'],
         data() { return {
-            isActive:true,
-            serviceName:'',
-            serviceDescription:'',
-            serviceDuration:'',
             serviceNameRules:[
                 serviceName => {
                     if(serviceName) return true
@@ -81,11 +75,45 @@
             ],
             }
         },
-        methods:{
-            handleSubmit(){
-                this.isActive=false;
+
+        setup(props, ctx) {
+
+            const dialog = ref(props.dialogIsActive);
+            const serviceName = ref('');
+            const serviceDescription = ref('');
+            const serviceDuration= ref('');
+            const formRef = ref(null);
+
+            watch(() => props.dialogIsActive, (newValue) => {
+                dialog.value = newValue;
+            });
+
+            onMounted(() => {
+                if (formRef.value) {
+                    formRef.value.resetValidation();
+                }
+            });
+
+
+            const handleSubmit = () => {
+                if (formRef.value.isValid) {
+                    console.log("El formulario es válido");
+                    // Realiza la petición para añadir el servicio
+                    // ctx.emit('service-added', serviceName.value, serviceDescription.value, serviceDuration.value);
+                } else {
+                    console.log("El formulario no es válido");
+                }
+            };
+
+            function closeDialog() {
+                ctx.emit('close-dialog');
             }
-        }
+
+            return { dialog, serviceName, serviceDescription, serviceDuration, handleSubmit, closeDialog, formRef };
+        
+        },
+
+
     }
 
 </script>
