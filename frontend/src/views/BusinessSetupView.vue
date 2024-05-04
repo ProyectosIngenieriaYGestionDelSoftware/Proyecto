@@ -4,21 +4,36 @@
       <v-progress-circular indeterminate color="white"></v-progress-circular>
     </v-overlay>
 
-    <v-table>
-        <thead>
-            <tr>
-                <th>
-                    Service Name
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-if="!loading" v-for="service in services">
-                <td>{{service.name}}</td>
-                <td>{{}}</td>
-            </tr>
-        </tbody>
-    </v-table>
+    <AddService />
+
+    <section class="ma-8">
+        <v-table>
+            <thead>
+                <tr>
+                    <th v-for="column in columns" :key="column.key">
+                        {{ column.label }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-if="!loading" v-for="service in services">
+                    <td>{{service.name}}</td>
+                    <td>{{service.description}}</td>
+                    <td>{{service.duration}}</td>
+                </tr>
+                <tr v-if="services.length===0">
+                    <p class="mt-4">You haven't added any services.</p>
+                </tr>
+            </tbody>
+        </v-table>
+
+        <div class="buttons">
+            <v-btn @click="" color="green" class="mr-4" >Add service</v-btn>
+            <v-btn color="red">Remove all services</v-btn>
+        </div>
+    </section>
+
+
 
 
 </template>
@@ -27,22 +42,30 @@
 <script>
 import { useAuthStore } from '@/stores/auth';
 import router from '../router';
+import AddService from '@/components/AddService.vue';
+
 
     export default {
+        components: {AddService},
+
         setup(){
-            const user = useAuthStore().user.user;
+            const user = useAuthStore().user;
             let services = [];
             let loading = true;
-            //console.log(user);
-            if (user===null || !user.is_business){
+            if (user===null || !user.user.is_business){
                 router.push("/");
             }else{
-                services = user.services;
+                services = user.user.services;
                 loading = false;
             }
             return {
                 services,
-                loading
+                loading,
+                columns: [
+                    { key: 'name', label: 'Service Name' },
+                    { key: 'description', label: 'Description' },
+                    { key: 'duration', label: 'Duration (minutes)' }
+                ],
             };
         }
 
@@ -53,6 +76,10 @@ import router from '../router';
 
 <style>
 
-
+.buttons {
+    width:100%;
+    display: flex;
+    justify-content: flex-end;
+}
 
 </style>
