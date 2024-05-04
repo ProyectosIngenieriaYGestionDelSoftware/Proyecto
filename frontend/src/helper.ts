@@ -1,4 +1,4 @@
-export enum TypeBusiness {
+export enum typeBusiness {
     PERSONAL_CARE = "Personal Care",
     RESTAURANT = "Restaurant",
     RENTING_CAR = "Renting Car",
@@ -12,5 +12,16 @@ export interface UserRequest {
 }
 
 export interface User {
-    
+    _id:string
+    name:string,
+    email:string,
+    phone_number:string,
+    is_business:boolean,
+    type:typeBusiness,
+    services:Service[]
+}
+
+export interface Service {
+    name:string,
+    duration:number
 }

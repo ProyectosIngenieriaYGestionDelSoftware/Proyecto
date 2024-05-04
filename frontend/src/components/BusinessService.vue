@@ -3,7 +3,7 @@
         <h3 class="business-service-title"> {{ business.business_service_title }} </h3>
         <p class="business-service-description"> {{ business.business_service_description }} </p>
         <p class="business-service-price"> {{ business.business_service_price }} </p>
-        <button class="btn btn-primary">Book now</button>
+        <button class="btn btn-primary" @click="navigateToBooking">Book now</button>
     </div>
   </template>
   
@@ -16,6 +16,13 @@
       business: {
         type: Object,
         required: true
+      },
+    },
+
+    methods: {
+      navigateToBooking() {
+        const url = `/business/booking/${encodeURIComponent(this.business.business_service_title)}`;
+        window.location.href = url;
       }
     }
   });
@@ -31,22 +38,36 @@
   }
 
   .business-service-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
+    font-family: 'Lilita One', sans-serif;
+    color: #2c3e50;
     margin-bottom: 10px;
   }
 
   .business-service-description {
-    font-size: 16px;
+    font-family: 'Platype', sans-serif;
     color: #666;
     margin-bottom: 10px;
   }
 
   .business-service-price {
     font-size: 20px;
-    color: #45b4a8;
+    color: #2c3e50;
     font-weight: bold;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #45b4a8;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;  
+    width: auto;
+  }
+  
+  button:hover {
+    background-color: #145354;
   }
 
 </style>
