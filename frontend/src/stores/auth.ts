@@ -9,20 +9,10 @@ export const useAuthStore = defineStore('user',{
 
     actions: {
 
-      async addServiceToUser(name:string,description:string,duration:number,price:number){
-
-        console.log(this.user);
-        let service :Service ={
-          name: name,
-          description: description,
-          duration: duration,
-          price: price
-        }
-        
-        const services = [...(this.user?.user.services ?? [])];
 
 
-        services?.push(service);
+      async updateServices(services:Service[]){
+
 
         const requestData = {
           email:this.user?.user.email,
@@ -44,8 +34,8 @@ export const useAuthStore = defineStore('user',{
 
           const userData = await response.json();
           //en caso de 200 hacer this.user.services = services
-          if(response.status==200){
-            this.user?.user.services.push(service);
+          if (response.status==200 && this.user && this.user.user) {
+            this.user.user.services = services;
             localStorage.setItem('user', JSON.stringify(this.user));
             return true;
           }else{
@@ -57,6 +47,7 @@ export const useAuthStore = defineStore('user',{
         }
 
       },
+
 
 
       async initUser() {

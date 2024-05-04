@@ -25,7 +25,7 @@
                     <td>{{service.duration}}</td>
                     <td>{{service.price}}</td>
                     <td>
-                        <v-btn icon="mdi-close" color="red" size="x-small"></v-btn>
+                        <v-btn icon="mdi-close" color="red" size="x-small" @click="removeService(service)"></v-btn>
                     </td>
                 </tr>
                 <tr v-if="services.length===0">
@@ -36,7 +36,7 @@
 
         <div class="buttons">
             <v-btn @click="openAddServiceDialog" color="green" class="mr-4" >Add service</v-btn>
-            <v-btn color="red">Remove all services</v-btn>
+            <v-btn @click="removeAllServices" color="red">Remove all services</v-btn>
         </div>
     </section>
 
@@ -79,8 +79,31 @@ import AddService from '@/components/AddService.vue';
             }
 
             async function serviceAdded(name,description,duration,price){
-                const req = await useAuthStore().addServiceToUser(name,description,duration,price).then(res => {
+                let service = {
+                    name:name,
+                    description:description,
+                    duration:duration,
+                    price:price
+                }
+                services = user.user.services;
+                services.push(service);
+                const req = await useAuthStore().updateServices(services).then(res => {
                     closeDialog();
+                });
+            }
+
+            async function removeService(service){
+                services = user.user.services;
+                services.pop(service);
+                const req = await useAuthStore().updateServices(services).then(res => {
+                    console.log(res);
+                });
+            }
+
+            async function removeAllServices(){
+                services = [];
+                const req = await useAuthStore().updateServices(services).then(res => {
+                    console.log(services);
                 });
             }
 
@@ -97,7 +120,9 @@ import AddService from '@/components/AddService.vue';
                 dialogIsActive,
                 openAddServiceDialog,
                 closeDialog,
-                serviceAdded
+                serviceAdded,
+                removeService,
+                removeAllServices
             };
         }
  
