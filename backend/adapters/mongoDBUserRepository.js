@@ -21,6 +21,13 @@ const userSchema = new mongoose.Schema( {
             return this.is_business === true;
         },
         default: undefined
+    },
+    resources: {
+        type: Array,
+        required: function() {
+            return this.is_business === true;
+        },
+        default: undefined
     }
 });
 
@@ -32,7 +39,7 @@ class MongoDBUserRepository {
         return newUser.save();
     }
 
-    async getUser(userId) {
+    async getUserById(userId) {
         return UserModel.findById(userId);
     }
 
