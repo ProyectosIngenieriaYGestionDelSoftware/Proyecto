@@ -38,6 +38,7 @@ import { useField, useForm } from 'vee-validate'
 import { useAuthStore } from '@/stores/auth';
 import { ref } from 'vue'
 import * as Yup from 'yup';
+import router from '../router';
 
 let showPassword = ref(false);
 let showErrorAlert = ref(false);
@@ -61,8 +62,8 @@ const password = useField('password');
 
 async function onSubmit(){
     const response = await useAuthStore().login(email.value.value,password.value.value)
-
-    if(response=="OK"){
+    console.log(response)
+    if(response===200){
       router.push("/");
     }else{
       showErrorAlert.value = true;
