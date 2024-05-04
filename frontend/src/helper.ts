@@ -23,5 +23,7 @@ export interface User {
 
 export interface Service {
     name:string,
-    duration:number
+    description:string,
+    duration:number,
+    price:number
 }

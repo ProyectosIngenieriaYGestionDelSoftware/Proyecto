@@ -1,6 +1,6 @@
 import { defineStore} from "pinia";
 import router from '../router'
-import { typeBusiness, UserRequest } from "@/helper";
+import { Service, typeBusiness, UserRequest } from "@/helper";
 
 export const useAuthStore = defineStore('user',{
     state: () => ({
@@ -8,6 +8,56 @@ export const useAuthStore = defineStore('user',{
     }),
 
     actions: {
+
+      async addServiceToUser(name:string,description:string,duration:number,price:number){
+
+        console.log(this.user);
+        let service :Service ={
+          name: name,
+          description: description,
+          duration: duration,
+          price: price
+        }
+        
+        const services = [...(this.user?.user.services ?? [])];
+
+
+        services?.push(service);
+
+        const requestData = {
+          email:this.user?.user.email,
+          newData:{services:services}
+        };
+        
+
+        let requestOptions = {
+          method:'PUT',
+          headers:{'Content-Type': 'application/json'},
+          body: JSON.stringify(requestData)
+        }
+
+        try {
+
+
+          const response = await fetch('http://localhost:3000/api/update-services', requestOptions);
+
+
+          const userData = await response.json();
+          //en caso de 200 hacer this.user.services = services
+          if(response.status==200){
+            this.user?.user.services.push(service);
+            localStorage.setItem('user', JSON.stringify(this.user));
+            return true;
+          }else{
+            return false;
+          }
+          
+        }catch(error){
+          console.log('There was a problem with the network request: ' + error);
+        }
+
+      },
+
 
       async initUser() {
 

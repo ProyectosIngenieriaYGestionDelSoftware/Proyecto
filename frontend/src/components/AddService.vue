@@ -17,13 +17,29 @@
                         :rules="serviceDescriptionRules"
                         v-model="serviceDescription"
                     ></v-textarea>
-                    <v-text-field
-                        label="Duration (minutes)"
-                        required
-                        type="number"
-                        :rules="serviceDurationRules"
-                        v-model="serviceDuration"
-                    ></v-text-field>
+                    <v-row>
+                        <v-col>
+                            <v-text-field
+                                label="Duration (minutes)"
+                                required
+                                type="number"
+                                :rules="serviceDurationRules"
+                                v-model="serviceDuration"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col>
+                            <v-text-field
+                                label="Price (euros)"
+                                required
+                                type="number"
+                                :rules="servicePriceRules"
+                                v-model="servicePrice"
+                            ></v-text-field>
+                        </v-col>
+
+                        
+                    </v-row>
+
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -46,7 +62,6 @@
 <script>
 
     import { ref , watch, onMounted  } from 'vue';
-
 
     export default {
 
@@ -73,6 +88,13 @@
                     return 'You must enter a service duration.'
                 },
             ],
+            servicePriceRules:[
+                serviceDuration => {
+                    if(serviceDuration) return true
+
+                    return 'You must enter a service price higher than 0.'
+                },
+            ],
             }
         },
 
@@ -81,7 +103,8 @@
             const dialog = ref(props.dialogIsActive);
             const serviceName = ref('');
             const serviceDescription = ref('');
-            const serviceDuration= ref('');
+            const serviceDuration= ref(0);
+            const servicePrice = ref(0)
             const formRef = ref(null);
 
             watch(() => props.dialogIsActive, (newValue) => {
@@ -97,11 +120,13 @@
 
             const handleSubmit = () => {
                 if (formRef.value.isValid) {
-                    console.log("El formulario es válido");
-                    // Realiza la petición para añadir el servicio
-                    // ctx.emit('service-added', serviceName.value, serviceDescription.value, serviceDuration.value);
+                    ctx.emit('service-added', serviceName.value, serviceDescription.value, serviceDuration.value, servicePrice.value);
+                    serviceName.value = '';
+                    serviceDescription.value = '';
+                    serviceDuration.value = 0;
+                    servicePrice.value = 0;
                 } else {
-                    console.log("El formulario no es válido");
+                    console.log("Form isn't valid");
                 }
             };
 
@@ -109,7 +134,7 @@
                 ctx.emit('close-dialog');
             }
 
-            return { dialog, serviceName, serviceDescription, serviceDuration, handleSubmit, closeDialog, formRef };
+            return { dialog, serviceName, serviceDescription, serviceDuration, servicePrice, handleSubmit, closeDialog, formRef };
         
         },
 

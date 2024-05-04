@@ -10,16 +10,23 @@
         <v-table>
             <thead>
                 <tr>
-                    <th v-for="column in columns" :key="column.key">
+                    <th class="text-center" v-for="column in columns" :key="column.key">
                         {{ column.label }}
+                    </th>
+                    <th class="text-center">
+                        Remove service
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-if="!loading" v-for="service in services">
+                <tr class="text-center" v-if="!loading" v-for="service in services">
                     <td>{{service.name}}</td>
                     <td>{{service.description}}</td>
                     <td>{{service.duration}}</td>
+                    <td>{{service.price}}</td>
+                    <td>
+                        <v-btn icon="mdi-close" color="red" size="x-small"></v-btn>
+                    </td>
                 </tr>
                 <tr v-if="services.length===0">
                     <p class="mt-4">You haven't added any services.</p>
@@ -71,8 +78,10 @@ import AddService from '@/components/AddService.vue';
                 dialogIsActive.value = false;
             }
 
-            function serviceAdded(name,description,duration){
-                console.log(name,description,duration)
+            async function serviceAdded(name,description,duration,price){
+                const req = await useAuthStore().addServiceToUser(name,description,duration,price).then(res => {
+                    closeDialog();
+                });
             }
 
 
@@ -82,7 +91,8 @@ import AddService from '@/components/AddService.vue';
                 columns: [
                     { key: 'name', label: 'Service Name' },
                     { key: 'description', label: 'Description' },
-                    { key: 'duration', label: 'Duration (minutes)' }
+                    { key: 'duration', label: 'Duration (minutes)' },
+                    { key: 'price', label: 'Price (euros)' }
                 ],
                 dialogIsActive,
                 openAddServiceDialog,

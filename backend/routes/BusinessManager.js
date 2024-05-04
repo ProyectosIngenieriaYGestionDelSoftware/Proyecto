@@ -12,7 +12,7 @@ router.put("/update-services", async function (req, res, next) {
         if (!user) {
             return res.status(404).json({ message: "The user does not exist" });
         }
-        await user_db.updateUser(user.id, newData);
+        await user_db.updateUser(user._id, newData);
         res.status(200).json({ message: "Services correctly updated" });
     } catch (error) {
         console.warn(error);
