@@ -1,9 +1,13 @@
 <template>
-    <div class="preview_business-container">
-      <img class="preview_business-img" :src="business.business_preview_image" :alt="business.business_name">
-      <p class="preview_business-name">{{ business.business_name }}</p>
-      <p class="preview_business-address">{{ business.business_address }}</p>
-    </div>
+    <v-card class="preview_business-container" width="400" height="400">
+      <v-img aspect-ratio="4/3" height="300" width="400" cover class="preview_business-img" :src="business.business_preview_image" :alt="business.business_name"></v-img>
+      <v-card-item>
+        <v-card-title class="preview_business-name">{{ business.business_name }}</v-card-title>
+        <v-card-text class="preview_business-address">{{ business.business_address }}</v-card-text>
+      </v-card-item>
+      
+      
+    </v-card>
   </template>
   
   <script lang="ts">
@@ -22,23 +26,15 @@
   
   <style scoped>
   .preview_business-container {
-    width: 100%;
-    height:auto;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: baseline;
+    align-items: center;
     border-radius: 20px;
     border: 1px solid #2c3e50;
   }
   
-  .preview_business-img {
-    width: 100%;
-    height: auto !;
-    object-fit: cover;
-  }
-
   .preview_business-name {
     color: #45b4a8;
     font-family: 'Lilita One', sans-serif;
@@ -51,6 +47,10 @@
     color: #2c3e50;
     height: 100%;
     padding: 0 0.2em;
+    white-space: nowrap ;
+    word-break: normal;
+    overflow: hidden ;
+    text-overflow: ellipsis;
   }
   </style>
   
