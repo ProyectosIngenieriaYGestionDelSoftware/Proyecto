@@ -1,7 +1,9 @@
-const onMessage = require('./onMessage');
-const send = require('./send');
+const getMessages = require('./getMessages');
+const sendMessage = require('./sendMessage');
+const setReadedMessages = require('./setReadedMessages')
 
 module.exports = {
-    onMessage,
-    send
+    getMessages,
+    sendMessage,
+    setReadedMessages
 }

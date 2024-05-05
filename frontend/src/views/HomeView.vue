@@ -38,10 +38,11 @@
   </div>
 
   <v-dialog v-model="showChat">
-    <ChatView style="justify-self: center;"></ChatView>
+    <ChatView style="justify-self: center;" @closeChat="showChat=!showChat" :otherEmail="'user1@aaa.com'"></ChatView>
   </v-dialog>
 
   <button @click="showChat = !showChat"> Show Chat</button>
+  
 </template>
 
 <script lang="ts">

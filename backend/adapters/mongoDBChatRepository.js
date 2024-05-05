@@ -45,8 +45,8 @@ class MongoDBChatRepository{
         return messages;
     }
 
-    async setReadedMessages(userEmail){
-        const result = await ChatModel.updateMany({receiver : userEmail},{$set: { readed: true }});
+    async setReadedMessages(receiver, sender){
+        const result = await ChatModel.updateMany({$and : [{receiver : receiver},{sender: sender}]},{$set: { readed: true }});
         return result;
     }
 }

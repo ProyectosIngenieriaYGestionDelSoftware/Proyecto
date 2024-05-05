@@ -19,7 +19,7 @@ router.post("/login", async function (req, res, next) {
     
     bcrypt.compare(password, encrypted,(err, same) => {
         if(err){
-            res.status(404).json({'message' : "Error during user authentication", "Error" : err});
+            res.status(404).json({message : "Error during user authentication", "Error" : err});
             return;
         }
         if(same){
