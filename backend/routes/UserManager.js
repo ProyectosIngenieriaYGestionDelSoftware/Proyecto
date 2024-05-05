@@ -47,4 +47,17 @@ router.get("/get-businesses", async function (req, res, next) {
     }
 });
 
+router.get('/get-business',async function(req,res,next){
+
+    const { _id } = req.body;
+
+    try{
+        business = await user_db.getUserById(_id);
+
+        res.status(200).json(business);
+    }catch(error){
+        res.status(500).json({message: "Error getting the business with id " + _id});
+    }
+})
+
 module.exports = router;
