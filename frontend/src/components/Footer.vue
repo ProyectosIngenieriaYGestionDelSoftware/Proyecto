@@ -2,7 +2,7 @@
     <div class="footer-basic">
   <footer>
     <ul class="list-inline">
-      <li class="list-inline-item"><router-link class="item"  to="/">Home</router-link></li>
+      <li class="list-inline-item"><router-link class="item" to="/">Home</router-link></li>
       <li class="list-inline-item"><router-link class="item" to="/">Cookies Policy</router-link></li>
       <li class="list-inline-item"><router-link class="item" to="/">Privacy Policy</router-link></li>
       <li class="list-inline-item"><router-link class="item" to="/">Legal Notice</router-link></li>
@@ -24,7 +24,7 @@
 <style scoped>
  .footer-basic {
   padding:2em 0;
-  background-color:#000000;
+  background-color:#0d1f29;
   color:#4b4c4d;
 }
 

@@ -8,6 +8,8 @@ const cors = require('cors');
 const UserRegister = require("./routes/UserRegister");
 const UserAuth = require("./routes/UserAuth");
 const Chat = require('./routes/Chat');
+const ReservationManager = require("./routes/ReservationManager");
+const UserManager = require("./routes/UserManager")
 const verifyToken = require("./middlewares/VerifyTokens");
 const dbConnection = require('./adapters/mongoDB');
 
@@ -33,6 +35,9 @@ app.get(api,  verifyToken, (req, res) => {
 app.use(api, UserRegister);
 app.use(api,UserAuth);
 app.use(api + 'chat/',Chat);
+app.use(api, UserAuth);
+app.use(api, ReservationManager);
+app.use(api, UserManager);
 
 const server = app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);

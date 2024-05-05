@@ -6,7 +6,7 @@
     </div>
     <div class="sections">
       <nav>
-        <!-- <router-link to="/all">Find & Book Your Appointment</router-link> -->
+        <router-link to="/all-businesses">Find Businesses</router-link>
         <!-- <router-link  to="/about">About</router-link> -->
       </nav>
     </div>
@@ -20,11 +20,44 @@
   </header>
 </template>
 
+<script lang='ts'>
+import { useAuthStore } from '@/stores/auth';
+import { defineComponent, computed } from 'vue'
+import router from '../router'
+
+
+export default defineComponent({
+    setup(props, ctx) {
+        const authStore = useAuthStore();
+        
+        //let user = authStore.user;
+        
+        const user = computed(() => authStore.user);
+
+
+        const unsuscribe = authStore.$subscribe((mutation)=>{})
+
+
+        const logOut = () => {
+          if(user!==null) useAuthStore().logout(user.value!.token);
+        }
+
+        const goToHome = () => {
+          router.push({ path: '/' });
+        }
+    
+    return { user , logOut, goToHome };
+  },
+})
+</script>
+
 
 <style scoped>
 .header {
-  display: flex;
-  justify-content: space-between;
+  /*display: flex;
+  justify-content: space-between;*/
+  display: grid;
+  grid-template-columns: 6fr 2fr 1fr;
   align-items: center;
   padding: 0.2em 1em;
   background-color: #0d1f29;
@@ -52,81 +85,50 @@
   }
   
   nav a {
-    font-weight: bold;
+    font-family: 'Lilita One';
+    font-size: large;
+    padding: 30px;
     color: #45b4a8;
+    text-decoration: none; 
+   
   }
 
-  nav router-link :hover{
-    font-weight: bold;
-    color: #45b4a8,;
+  nav a:hover{
+    color: #145354,;
+    text-decoration: underline; 
   }
   
   nav a.router-link-exact-active {
-    color: #42b983;
+    color: #ffffff;
+    text-decoration: underline; 
   }
+
 }
 
-#authenticate {
-  padding: 10px 20px;
+.auth {
   background-color: #218283;
+  padding: 5px 0;
   color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  text-decoration: none; 
 }
-</style>
 
+.auth a {
+  color: #ffffff;
+  text-decoration: none; 
+}
 
-<script lang='ts'>
-import { useAuthStore } from '@/stores/auth';
-import { defineComponent, computed } from 'vue'
-import router from '../router'
+.auth:hover {
+  background-color: #145354;
+}
 
-
-export default defineComponent({
-    setup(props, ctx) {
-        const authStore = useAuthStore();
-        
-        //let user = authStore.user;
-        
-        const user = computed(() => authStore.user);
-
-
-        const unsuscribe = authStore.$subscribe((mutation)=>{})
-
-
-        const logOut = () => {
-          authStore.user = useAuthStore().logout(user.value.token);
-        }
-
-        const goToHome = () => {
-          router.push({ path: '/' });
-        }
-    
-    return { user , logOut, goToHome };
-  },
-})
-</script>
-
-<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>

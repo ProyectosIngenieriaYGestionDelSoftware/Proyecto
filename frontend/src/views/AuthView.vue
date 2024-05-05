@@ -6,8 +6,8 @@
         bg-color="primary"
         grow
       >
-        <v-tab value="register">Register</v-tab>
-        <v-tab value="login">LogIn</v-tab>
+        <v-tab value="register">Sign Up</v-tab>
+        <v-tab value="login">Log In</v-tab>
       </v-tabs>
 
       <v-card-text>
@@ -48,7 +48,7 @@ import Login from "@/components/Login.vue";
 
 #authSection{
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

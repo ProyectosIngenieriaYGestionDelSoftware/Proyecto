@@ -10,6 +10,7 @@ const auth_db = db.getAuthRepository();
 router.post("/login", async function (req, res, next) {
     const { email, password } = req.body;
     const user = await user_db.getUserByEmail(email);
+
     if(user === undefined){
         res.status(404).json({message : "User not found"});
         return;
@@ -36,6 +37,10 @@ router.post("/login", async function (req, res, next) {
 router.post("/logout", verifyToken, async function(req, res, next){
     await auth.invalidateToken(req.headers.authorization);
     res.json("OK");
+});
+
+router.get('/checkToken',verifyToken,(_,res)=> {
+    res.status(200).json('ok');
 });
 
 module.exports = router

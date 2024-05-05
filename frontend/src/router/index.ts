@@ -21,7 +21,27 @@ const routes: Array<RouteRecordRaw> = [
     path : '/chat',
     name : 'chat',
     component : ChatView
-  }
+  },
+  {
+    path: '/all-businesses',
+    name: 'all-businesses',
+    component: () => import('@/views/AllBusinessesView.vue')
+  },
+  {
+    path: '/business/:id',
+    name: 'business',
+    component: () => import('@/views/BusinessView.vue')
+  },
+  {
+    path: '/business/edit',
+    name: 'business-edit',
+    component: () => import('@/views/BusinessSetupView.vue')
+  },
+  {
+    path: '/business/booking/:id',
+    name: 'booking',
+    component: () => import('@/views/BookingView.vue')
+  },
 ]
 
 const router = createRouter({

@@ -38,7 +38,7 @@
           :error-messages="phoneNumber.errorMessage.value"
           type="tel"
           label="Phone number"
-          append-inner-icon="mdi-email"
+          append-inner-icon="mdi-phone"
           required
         ></v-text-field>
         <v-text-field 
@@ -64,7 +64,7 @@
         <v-btn class="mt-2" type="submit" block>Next</v-btn>
       </v-form>
       
-      <second-form-register :class="showSecondForm?'d-block':'d-none'" @submit="(value)=>onSecondSubmit(value.value)"></second-form-register>
+      <second-form-register :class="showSecondForm?'d-block':'d-none'" @submit="onSecondSubmit"></second-form-register>
       <v-alert
         v-if="showErrorAlert"
         text="Error during the register, try again with another email"
@@ -148,6 +148,8 @@
       is_business,
       typeBusiness
     );
+
+    console.log(typeBusiness);
 
     if(registerCode==200){
       router.push("/");
