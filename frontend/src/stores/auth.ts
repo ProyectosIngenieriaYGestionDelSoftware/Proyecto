@@ -1,6 +1,7 @@
 import { defineStore} from "pinia";
 import router from '../router'
 import { Service, typeBusiness, UserRequest } from "@/helper";
+import { DOMAIN_BACKEND } from "@/config";
 
 export const useAuthStore = defineStore('user',{
     state: () => ({
@@ -29,7 +30,7 @@ export const useAuthStore = defineStore('user',{
         try {
 
 
-          const response = await fetch('http://localhost:3000/api/update-services', requestOptions);
+          const response = await fetch(DOMAIN_BACKEND + 'update-services', requestOptions);
 
 
           const userData = await response.json();
@@ -66,7 +67,7 @@ export const useAuthStore = defineStore('user',{
         }
 
       
-        fetch('http://localhost:3000/api/checkToken',requestOptions)
+        fetch(DOMAIN_BACKEND + '/checkToken',requestOptions)
           .then(response => {
             
             if(!response.ok) { 
@@ -104,7 +105,7 @@ export const useAuthStore = defineStore('user',{
             };
               
             try {
-              const response = await fetch('http://localhost:3000/api/register', requestOptions);
+              const response = await fetch(DOMAIN_BACKEND + '/register', requestOptions);
       
               if (response.status === 200) {
                 const userData = await response.json();
@@ -130,7 +131,7 @@ export const useAuthStore = defineStore('user',{
           };
 
           try{
-            const req = await fetch('http://localhost:3000/api/logout',requestOptions);
+            const req = await fetch(DOMAIN_BACKEND + '/logout',requestOptions);
 
             const response = await req.json();
 
@@ -161,7 +162,7 @@ export const useAuthStore = defineStore('user',{
               };
 
               try {
-                const response = await fetch('http://localhost:3000/api/login', requestOptions);
+                const response = await fetch(DOMAIN_BACKEND + '/login', requestOptions);
         
                 if (response.status === 200) {
                   const userData = await response.json();
