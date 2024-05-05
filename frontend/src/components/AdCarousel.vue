@@ -41,8 +41,8 @@ export default defineComponent({
 }
 
 .carousel_box {
-  width: 50%;
-  height: 50%;
+  width: 30%;
+  height: 30%;
   display: inline-block; /* Mantiene el carousel como un bloque en línea */
   vertical-align: middle; /* Centra verticalmente el carousel */
 }

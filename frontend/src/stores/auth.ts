@@ -30,7 +30,7 @@ export const useAuthStore = defineStore('user',{
         try {
 
 
-          const response = await fetch(DOMAIN_BACKEND + 'update-services', requestOptions);
+          const response = await fetch(DOMAIN_BACKEND + '/update-user', requestOptions);
 
 
           const userData = await response.json();

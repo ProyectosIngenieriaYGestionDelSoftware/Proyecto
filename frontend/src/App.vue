@@ -42,4 +42,21 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
 }
+
+::-webkit-scrollbar {
+  width: 0.8em;
+  background-color: #0d1f29;;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: #145354;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #45b4a8;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-button {
+  background-color: #2c3e50;
+}
 </style>
