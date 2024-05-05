@@ -11,6 +11,21 @@ export const useAuthStore = defineStore('user',{
     actions: {
 
 
+      async getAllBusiness(){
+        let requestOptions = {
+          method:'GET',
+          headers:{'Content-Type': 'application/json'}
+        }
+
+        return await fetch(DOMAIN_BACKEND + '/get-businesses').then(async res => {
+          return await res.json();
+        }).catch(error => {
+          console.log('There was a problem with the network request: ' + error);
+          return false;
+        });
+      },
+
+
 
       async updateServices(services:Service[]){
 
@@ -33,7 +48,7 @@ export const useAuthStore = defineStore('user',{
           const response = await fetch(DOMAIN_BACKEND + '/update-user', requestOptions);
 
 
-          const userData = await response.json();
+          //const userData = await response.json();
           //en caso de 200 hacer this.user.services = services
           if (response.status==200 && this.user && this.user.user) {
             this.user.user.services = services;

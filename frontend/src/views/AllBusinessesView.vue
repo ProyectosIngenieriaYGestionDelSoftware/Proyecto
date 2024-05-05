@@ -17,19 +17,24 @@
             <span class="warning-icon">&#9888;</span> No matches found.
         </div>
   
-        <ul class="businesses-boxes">
-          <li class="business-box" v-for="item in filteredItems" :key="item.business_name" @click="navigateToBusiness(item)">
-            <BusinessPreview :business="item"></BusinessPreview>
-          </li>
-        </ul>
+        <v-container class="businesses-boxes">
+          <!-- <div class="business-box" v-for="business in businesses" :key="business._id" @click="navigateToBusiness(business)">
+            <BusinessPreview :business="business"></BusinessPreview>
+          </div> -->
+          <div class="business-box" v-for="business in businesses.values">
+            <BusinessPreview :business="business"></BusinessPreview>
+          </div>
+        </v-container>
       </div>
     </div>
   </template>
   
   <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
 import AdCarousel from '../components/AdCarousel.vue';
 import BusinessPreview from '@/components/BusinessPreview.vue';
+import { User } from '@/helper';
 
 interface Business {
   business_preview_image: any;
@@ -43,6 +48,26 @@ export default defineComponent({
     AdCarousel,
     BusinessPreview
   },
+
+  setup(){
+    
+    const businesses = ref([]); 
+    
+    useAuthStore().getAllBusiness().then(res => {
+      if(res){
+        businesses.value = res;
+        console.log(businesses.value);
+        
+      }else{
+        console.log("No hay empresas");
+        
+      }
+    });
+
+
+    return { businesses }
+  },
+
   data() {
     return {
       items: [
@@ -130,15 +155,21 @@ nav {
   
   
 .businesses-boxes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 6em;
-    grid-row-gap: 2em;
-    justify-items: center;
-    align-items: baseline;
-
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 5em;
+    row-gap: 2em;
+    justify-content: center;
+    width: 100%;
     padding: 2em 6em;
     margin: 0;
+}
+
+.businesses-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .business-box {
     list-style: none;

@@ -7,7 +7,7 @@
     <div class="sections">
       <nav>
         <router-link to="/all-businesses">Find Businesses</router-link>
-        <!-- <router-link  to="/about">About</router-link> -->
+        <router-link v-if="user?.user.is_business" to="/business/edit">Edit Services</router-link>
       </nav>
     </div>
     <div class="auth">
@@ -27,7 +27,7 @@ export default defineComponent({
     setup(props, ctx) {
         const authStore = useAuthStore();
         
-        //let user = authStore.user;
+        //console.log(authStore.user);
         
         const user = computed(() => authStore.user);
 
