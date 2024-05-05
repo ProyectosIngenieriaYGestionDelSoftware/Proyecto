@@ -9,6 +9,12 @@ const userSchema = new mongoose.Schema( {
     },
     phone_number: String,
     is_business: Boolean,
+    address: {
+        type: String,
+        required: function() {
+            return this.is_business === true;
+        }
+    },
     type: {
         type: String,
         required: function() {
@@ -54,6 +60,10 @@ class MongoDBUserRepository {
 
     async deleteUser(userId) {
         return UserModel.findByIdAndDelete(userId);
+    }
+
+    async getBusinesses() {
+        return UserModel.find({ is_business: true });
     }
 }
 

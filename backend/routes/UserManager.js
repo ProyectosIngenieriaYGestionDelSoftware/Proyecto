@@ -5,14 +5,14 @@ const user_db = db.getUserRepository();
 
 router.put("/update-user", async function (req, res, next) {
     const { email, newData } = req.body;
-
     try {
         user = await user_db.getUserByEmail(email);
-
+        console.log(user);
+        console.log(newData);
         if (!user) {
             return res.status(404).json({ message: "The user does not exist" });
         }
-        await user_db.updateUser(user.id, newData);
+        await user_db.updateUser(user._id, newData);
         res.status(200).json({ message: "The user was successfully updated" });
     } catch (error) {
         console.warn(error);
@@ -35,6 +35,16 @@ router.delete("/delete-user", async function (req, res, next) {
         console.warn(error);
         res.status(500).json({ message: error });
     }
-})
+});
+
+router.get("/get-businesses", async function (req, res, next) {
+    try {
+        businesses = await user_db.getBusinesses();
+
+        res.status(200).json(businesses);
+    } catch (error) {
+        res.status(500).json({ message: "Error getting the businesses" });
+    }
+});
 
 module.exports = router;
