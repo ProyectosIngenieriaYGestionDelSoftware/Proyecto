@@ -5,8 +5,25 @@ export enum typeBusiness {
     HEALTH_CARE = "Medical Appointments"
 }
 
-export interface userRequest {
+export interface UserRequest {
     message:string,
-    username:string,
+    user:User,
     token:string
+}
+
+export interface User {
+    _id:string
+    name:string,
+    email:string,
+    phone_number:string,
+    is_business:boolean,
+    type:typeBusiness,
+    services:Service[]
+}
+
+export interface Service {
+    name:string,
+    description:string,
+    duration:number,
+    price:number
 }

@@ -1,13 +1,55 @@
 import { defineStore} from "pinia";
 import router from '../router'
-import { typeBusiness, userRequest } from "@/helper";
+import { Service, typeBusiness, UserRequest } from "@/helper";
+import { DOMAIN_BACKEND } from "@/config";
 
 export const useAuthStore = defineStore('user',{
     state: () => ({
-        user: null as userRequest | null
+        user: null as UserRequest | null
     }),
 
     actions: {
+
+
+
+      async updateServices(services:Service[]){
+
+
+        const requestData = {
+          email:this.user?.user.email,
+          newData:{services:services}
+        };
+        
+
+        let requestOptions = {
+          method:'PUT',
+          headers:{'Content-Type': 'application/json'},
+          body: JSON.stringify(requestData)
+        }
+
+        try {
+
+
+          const response = await fetch(DOMAIN_BACKEND + '/update-user', requestOptions);
+
+
+          const userData = await response.json();
+          //en caso de 200 hacer this.user.services = services
+          if (response.status==200 && this.user && this.user.user) {
+            this.user.user.services = services;
+            localStorage.setItem('user', JSON.stringify(this.user));
+            return true;
+          }else{
+            return false;
+          }
+          
+        }catch(error){
+          console.log('There was a problem with the network request: ' + error);
+        }
+
+      },
+
+
 
       async initUser() {
 
@@ -25,7 +67,7 @@ export const useAuthStore = defineStore('user',{
         }
 
       
-        fetch('http://localhost:3000/api/checkToken',requestOptions)
+        fetch(DOMAIN_BACKEND + '/checkToken',requestOptions)
           .then(response => {
             
             if(!response.ok) { 
@@ -63,7 +105,7 @@ export const useAuthStore = defineStore('user',{
             };
               
             try {
-              const response = await fetch('http://localhost:3000/api/register', requestOptions);
+              const response = await fetch(DOMAIN_BACKEND + '/register', requestOptions);
       
               if (response.status === 200) {
                 const userData = await response.json();
@@ -89,7 +131,7 @@ export const useAuthStore = defineStore('user',{
           };
 
           try{
-            const req = await fetch('http://localhost:3000/api/logout',requestOptions);
+            const req = await fetch(DOMAIN_BACKEND + '/logout',requestOptions);
 
             const response = await req.json();
 
@@ -120,7 +162,7 @@ export const useAuthStore = defineStore('user',{
               };
 
               try {
-                const response = await fetch('http://localhost:3000/api/login', requestOptions);
+                const response = await fetch(DOMAIN_BACKEND + '/login', requestOptions);
         
                 if (response.status === 200) {
                   const userData = await response.json();
