@@ -53,7 +53,7 @@ export default defineComponent({
     setup(props, ctx ) {
         const socket = useSocketStore();
         const auth = useAuthStore();
-        const user = ref(auth.user.user);
+        const user = ref(auth.user!.user);
         const other = ref("user2");
         const virtualScroller = ref();
         const textMessage = ref("");
