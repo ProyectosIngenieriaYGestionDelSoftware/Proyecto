@@ -11,13 +11,29 @@ export const useAuthStore = defineStore('user',{
     actions: {
 
 
+      async getBusiness(_id:string){
+
+        let requestOptions = {
+          method:'GET',
+          headers:{'Content-Type': 'application/json'},
+        }
+
+        return await fetch(DOMAIN_BACKEND + '/get-business/'+_id,requestOptions).then(async res => {
+          return await res.json();
+        }).catch(error => {
+          console.log('There was a problem with the network request: ' + error);
+          return false;
+        });
+      },
+
+
       async getAllBusiness(){
         let requestOptions = {
           method:'GET',
           headers:{'Content-Type': 'application/json'}
         }
 
-        return await fetch(DOMAIN_BACKEND + '/get-businesses').then(async res => {
+        return await fetch(DOMAIN_BACKEND + '/get-businesses',requestOptions).then(async res => {
           return await res.json();
         }).catch(error => {
           console.log('There was a problem with the network request: ' + error);
