@@ -4,9 +4,31 @@
       <v-progress-circular indeterminate color="white"></v-progress-circular>
     </v-overlay>
 
-   <AddService :dialogIsActive="dialogIsActive" @close-dialog="closeDialog" @service-added="serviceAdded" />
+    <v-dialog persistent v-model="dialogConfirmDelete" max-width="400" width="auto">
+        <v-card 
+            prepend-icon="mdi-update"
+            :text="textConfirmDelete"
+            title="Delete confirmation"
+        >
+            <template v-slot:actions class="align-end">
+                <v-btn
+                    text="Cancel"
+                    @click="dialogConfirmDelete = false"
+                ></v-btn>
+                <v-btn
+                    color="red"
+                    text="Confirm"
+                    @click="serviceToDelete.length > 1 ? removeAllServices() : removeService(serviceToDelete.value)"
+                ></v-btn>
 
-    <section class="ma-8">
+            </template>
+        </v-card>
+    </v-dialog>
+
+   <AddService :dialogIsActive="dialogAddService" @close-dialog="closeDialog" @service-added="serviceAdded"/>
+
+    <section class="">
+
         <v-table>
             <thead>
                 <tr>
@@ -25,7 +47,7 @@
                     <td>{{service.duration}}</td>
                     <td>{{service.price}}</td>
                     <td>
-                        <v-btn icon="mdi-close" color="red" size="x-small" @click="removeService(service)"></v-btn>
+                        <v-btn icon="mdi-close" color="red" size="x-small" @click="warnRemove(service,false)"></v-btn>
                     </td>
                 </tr>
                 <tr v-if="services.length===0">
@@ -34,21 +56,21 @@
             </tbody>
         </v-table>
 
-        <div class="buttons">
-            <v-btn @click="openAddServiceDialog" color="green" class="mr-4" >Add service</v-btn>
-            <v-btn @click="removeAllServices" color="red">Remove all services</v-btn>
-        </div>
+
     </section>
 
 
-
+    <div class="buttons">
+            <v-btn @click="openAddServiceDialog" color="green" class="mr-4" >Add service</v-btn>
+            <v-btn @click="warnRemove(null,true)" color="red">Remove all services</v-btn>
+    </div>
 
 </template>
 
 
 <script>
 import { useAuthStore } from '@/stores/auth';
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 import router from '../router';
 import AddService from '@/components/AddService.vue';
 
@@ -57,11 +79,18 @@ import AddService from '@/components/AddService.vue';
         components: {AddService},
 
         setup(){
+            const dialogConfirmDelete = ref(false);
+            const textConfirmDelete = ref("");
+            const serviceToDelete = ref();
+
+            
+
 
             const user = useAuthStore().user;
             let services = [];
             let loading = true;
-            const dialogIsActive = ref(false);
+
+            const dialogAddService = ref(false);
 
             if (user===null || !user.user.is_business){
                 router.push("/");
@@ -71,11 +100,11 @@ import AddService from '@/components/AddService.vue';
             }
 
             function openAddServiceDialog() {
-                dialogIsActive.value = true;
+                dialogAddService.value = true;
             }
 
             function closeDialog() {
-                dialogIsActive.value = false;
+                dialogAddService.value = false;
             }
 
             async function serviceAdded(name,description,duration,price){
@@ -92,11 +121,27 @@ import AddService from '@/components/AddService.vue';
                 });
             }
 
+
+            function warnRemove(service,allServices){
+
+                if(allServices){
+                    serviceToDelete.value = services;
+                    textConfirmDelete.value = "Are you sure to delete all services?"
+                }else{
+                    serviceToDelete.value = service;
+                    textConfirmDelete.value = "Are you sure to delete service '"+service.name+"'?"
+                }
+
+                dialogConfirmDelete.value = true;
+            }
+
+
             async function removeService(service){
                 services = user.user.services;
                 services.pop(service);
                 const req = await useAuthStore().updateServices(services).then(res => {
                     console.log(res);
+                    dialogConfirmDelete.value = false;
                 });
             }
 
@@ -104,12 +149,15 @@ import AddService from '@/components/AddService.vue';
                 services = [];
                 const req = await useAuthStore().updateServices(services).then(res => {
                     console.log(services);
+                    dialogConfirmDelete.value = false;
                 });
             }
 
 
             return {
                 services,
+                serviceToDelete,
+                textConfirmDelete,
                 loading,
                 columns: [
                     { key: 'name', label: 'Service Name' },
@@ -117,12 +165,14 @@ import AddService from '@/components/AddService.vue';
                     { key: 'duration', label: 'Duration (minutes)' },
                     { key: 'price', label: 'Price (euros)' }
                 ],
-                dialogIsActive,
+                dialogAddService,
+                dialogConfirmDelete,
                 openAddServiceDialog,
                 closeDialog,
                 serviceAdded,
                 removeService,
-                removeAllServices
+                removeAllServices,
+                warnRemove
             };
         }
  
@@ -136,6 +186,13 @@ import AddService from '@/components/AddService.vue';
     width:100%;
     display: flex;
     justify-content: flex-end;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin:32px;
 }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <v-dialog persistent max-width="400" v-model="dialog">
+    <v-dialog persistent max-width="400" v-model="dialog" @after-leave="resetForm">
         <v-form ref="formRef" @submit.prevent="handleSubmit"> 
 
         
@@ -83,14 +83,14 @@
             ],
             serviceDurationRules:[
                 serviceDuration => {
-                    if(serviceDuration) return true
-
-                    return 'You must enter a service duration.'
+                    if(serviceDuration && serviceDuration>0) return true
+ 
+                    return 'You must enter a service duration higher than 0.'
                 },
             ],
             servicePriceRules:[
-                serviceDuration => {
-                    if(serviceDuration) return true
+                servicePrice => {
+                    if(servicePrice && servicePrice>0) return true
 
                     return 'You must enter a service price higher than 0.'
                 },
@@ -111,6 +111,7 @@
                 dialog.value = newValue;
             });
 
+
             onMounted(() => {
                 if (formRef.value) {
                     formRef.value.resetValidation();
@@ -121,20 +122,23 @@
             const handleSubmit = () => {
                 if (formRef.value.isValid) {
                     ctx.emit('service-added', serviceName.value, serviceDescription.value, serviceDuration.value, servicePrice.value);
-                    serviceName.value = '';
-                    serviceDescription.value = '';
-                    serviceDuration.value = 0;
-                    servicePrice.value = 0;
                 } else {
                     console.log("Form isn't valid");
                 }
             };
 
+            function resetForm(){
+                serviceName.value = '';
+                serviceDescription.value = '';
+                serviceDuration.value = 0;
+                servicePrice.value = 0;
+            }
+
             function closeDialog() {
                 ctx.emit('close-dialog');
             }
 
-            return { dialog, serviceName, serviceDescription, serviceDuration, servicePrice, handleSubmit, closeDialog, formRef };
+            return { dialog, serviceName, serviceDescription, serviceDuration, servicePrice, handleSubmit, closeDialog, formRef, resetForm };
         
         },
 
