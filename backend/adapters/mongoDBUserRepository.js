@@ -11,9 +11,10 @@ const userSchema = new mongoose.Schema( {
     is_business: Boolean,
     address: {
         type: String,
-        required: function() {
+        /*required: function() {
             return this.is_business === true;
-        }
+        },*/
+        default: undefined
     },
     type: {
         type: String,
@@ -30,9 +31,9 @@ const userSchema = new mongoose.Schema( {
     },
     resources: {
         type: Array,
-        required: function() {
+        /*required: function() {
             return this.is_business === true;
-        },
+        },*/
         default: undefined
     }
 });

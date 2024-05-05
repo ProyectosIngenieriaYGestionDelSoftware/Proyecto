@@ -16,6 +16,7 @@ export interface User {
     name:string,
     email:string,
     phone_number:string,
+    direction:string,
     is_business:boolean,
     type:typeBusiness,
     services:Service[]

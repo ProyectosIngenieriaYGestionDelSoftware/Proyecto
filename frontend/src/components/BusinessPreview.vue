@@ -1,9 +1,11 @@
 <template>
     <v-card class="preview_business-container" width="400" height="400">
-      <v-img aspect-ratio="4/3" height="300" width="400" cover class="preview_business-img" :src="business.business_preview_image" :alt="business.business_name"></v-img>
+      <!-- <v-img aspect-ratio="4/3" height="300" width="400" cover class="preview_business-img" :src="business.business_preview_image" :alt="business.business_name"></v-img> -->
+      <v-img aspect-ratio="4/3" height="300" width="400" cover class="preview_business-img" src="@/assets/businesses/business1.jpeg" :alt="business.business_name"></v-img>
       <v-card-item>
-        <v-card-title class="preview_business-name">{{ business.business_name }}</v-card-title>
-        <v-card-text class="preview_business-address">{{ business.business_address }}</v-card-text>
+        <v-card-title class="preview_business-name">{{ business.name }}</v-card-title>
+        
+        <v-card-text class="preview_business-address">{{ business.name }}<!--Tiene que ir el business.direction--></v-card-text>
       </v-card-item>
       
       
@@ -12,6 +14,7 @@
   
   <script lang="ts">
   import { defineComponent } from 'vue';
+  import { User } from '@/helper';
   
   export default defineComponent({
     name: 'BusinessPreview',

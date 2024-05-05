@@ -10,21 +10,18 @@
       
       <div class="businesses-container">
         <nav>
-          <input class="nav-filter" type="text" placeholder="Search business..." v-model="searchTerm" @input="filterItems">
+          <!-- <input class="nav-filter" type="text" placeholder="Search business..." v-model="searchTerm" @input="filterItems"> -->
         </nav>
 
-        <div v-if="filteredItems.length === 0" class="no-matches">
+        <!-- <div v-if="filteredItems.length === 0" class="no-matches">
             <span class="warning-icon">&#9888;</span> No matches found.
-        </div>
+        </div> -->
   
-        <v-container class="businesses-boxes">
-          <!-- <div class="business-box" v-for="business in businesses" :key="business._id" @click="navigateToBusiness(business)">
-            <BusinessPreview :business="business"></BusinessPreview>
-          </div> -->
-          <div class="business-box" v-for="business in businesses.values">
+        <section class="businesses-boxes">
+          <div class="business-box" v-for="business in businesses" :key="business" @click="navigateToBusiness(business)">
             <BusinessPreview :business="business"></BusinessPreview>
           </div>
-        </v-container>
+        </section>
       </div>
     </div>
   </template>
@@ -60,7 +57,6 @@ export default defineComponent({
         
       }else{
         console.log("No hay empresas");
-        
       }
     });
 
@@ -70,41 +66,19 @@ export default defineComponent({
 
   data() {
     return {
-      items: [
-        {
-          business_preview_image: require('@/assets/businesses/business1.jpeg'),
-          business_name: "Brooklyn Barber Shop Paterna",
-          business_address: "Avenida Vicente Mortes 62, Bajo A, 46980, Paterna",
-        },
-        {
-          business_preview_image: require('@/assets/businesses/business2.jpeg'),
-          business_name: "Beauty Palace",
-          business_address: "Calle Torres, 12, 35002, Las Palmas de Gran Canaria",
-        },
-        {
-          business_preview_image: require('@/assets/businesses/business3.jpeg'),
-          business_name: "Divinity Barber Shop",
-          business_address: "C.Republica Dominicana 33, Esq. Costa Rica, Local, 35010, Las Palmas de Gran Canaria",
-        },
-        {
-          business_preview_image: require('@/assets/businesses/business4.jpeg'),
-          business_name: "Organic Beauty",
-          business_address: "Calle Cirilo Moreno, 22, 35007, Las Palmas de Gran Canaria",
-        },
-      ] as Business[], // Especificamos el tipo de datos como Business[]
       searchTerm: '',
       filteredItems: [] as Business[] // Inicializamos filteredItems con el mismo tipo de datos que items
     };
   },
   methods: {
     filterItems(): void {
-      this.filteredItems = this.items.filter((item: Business) => // Especificamos el tipo de datos para 'item'
+      this.filteredItems = this.businesses.filter((item: Business) => // Especificamos el tipo de datos para 'item'
         item.business_name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     },
 
-    navigateToBusiness(item: Business): void {
-      const url = `/business/${encodeURIComponent(item.business_name)}`;
+    navigateToBusiness(item: User): void {
+      const url = `/business/${encodeURIComponent(item._id)}`;
       window.location.href = url;
     }
   },
