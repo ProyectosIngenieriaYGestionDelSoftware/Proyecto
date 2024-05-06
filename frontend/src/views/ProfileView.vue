@@ -1,69 +1,68 @@
 <template>
-    <div class="profile-view">
-        <h1 class="profile-title">Profile</h1>
-        
-        <div class="profile-container">
-            <div class="profile-box">
-                <img class="profile-img" :src="image" :alt="name"></img>
-            </div>
-    
-            <form class="profile-info">
-                <div class="profile-data">
-                    <label for="is_business">Is it a Business?: </label>
-                    <input type="checkbox" id="is_business" v-model="is_business" :disabled="!isEditable" class="custom-checkbox">
-                </div>
-                <div class="profile-data">
-                    <label for="name">Name: </label>
-                    <input type="text" id="name" v-model="name" :disabled="!isEditable">
-                </div>
-                <div class="profile-data">
-                    <label for="email">E-mail: </label>
-                    <input type="text" id="email" v-model="email" disabled>
-                </div>
-                <div class="profile-data">
-                    <label for="phone">Phone Number: </label>
-                    <input type="text" id="phone" v-model="phone_number" :disabled="!isEditable">
-                </div>
-                <div class="profile-data">
-                    <label for="type">Type: </label>
-                    <select id="type" v-model="type" :disabled="!isEditable">
-                        <option v-for="(option, index) in typeOptions" :value="option.id" :key="index">{{ option.name }}</option>
-                    </select>
-                </div>
-                <div class="profile-data">
-                    <label for="location">Location: </label>
-                    <input type="text" id="location" v-model="location" :disabled="!isEditable">
-                </div>
-                <div class="profile-buttons">
-                    <button type="button" id="profile-edit-button" @click="editProfile">{{ isEditable ? 'Save' : 'Edit' }}</button>
-                    <button id="profile-services-button" @click="seeServices">SEE SERVICES</button>
-                </div>  
-            </form>
-        </div>      
-    </div>
-  </template>
+  <div class="profile-view">
+    <h1 class="profile-title">Profile</h1>
+
+    <v-card class="profile-container">
+      <div class="profile-box">
+        <img class="profile-img" :src="image" :alt="name"></img>
+      </div>
+
+      <v-form class="profile-info">
+        <div class="profile-data">
+          <p>
+            Is it a Business?: 
+            <v-icon icon="mdi-check-bold" v-if="user.is_business" color="success"></v-icon>
+            <v-icon icon="mdi-close-thick" v-if="!user.is_business" color="error"></v-icon> 
+          </p>
+        </div>
+        <div class="profile-data">
+          <label for="name">Name: </label>
+          <v-text-field variant="solo" v-model="user.name"></v-text-field>
+        </div>
+        <div class="profile-data">
+          <label for="email">E-mail: </label>
+          <v-text-field disabled variant="solo" v-model="user.email"></v-text-field>
+        </div>
+        <div class="profile-data" >
+          <label for="phone">Phone Number: </label>
+          <v-text-field variant="solo" v-model="user.phone_number"></v-text-field>
+        </div>
+        <div class="profile-data" v-if="user.is_business">
+          <label for="type">Type of business: </label>
+          <v-select variant="solo"></v-select>
+        </div>
+        <div class="profile-data" v-if="user.is_business">
+          <label for="location">Location: </label>
+          <v-text-field variant="solo" v-model="user.direction"></v-text-field>
+        </div>
+        <div class="profile-buttons">
+          <v-btn type="button" id="profile-edit-button" @click="editProfile">{{ isEditable ? 'Save' : 'Edit'
+            }}</v-btn>
+          <v-btn id="profile-services-button" v-if="user.is_business" @click="seeServices">SEE SERVICES</v-btn>
+        </div>
+      </v-form>
+    </v-card>
+  </div>
+</template>
   
-  <script>
+<script>
+
+  import { useAuthStore } from '@/stores/auth';
+
   export default {
     name: 'ProfileView',
     data() {
-        return {
-            image: require('@/assets/businesses/business2.jpeg'),
-            is_business: true,
-            name: "Awesome Business Name",
-            email: "dummy@gmail.com",
-            phone_number: "123-123-123",
-            type: '1',
-            location: "Fake Street, 123",
+      return {
+        image: require('@/assets/businesses/business2.jpeg'),
 
-            isEditable: false,
-            typeOptions: [
-            { id: '1', name: 'Tipo 1' },
-            { id: '2', name: 'Tipo 2' },
-            { id: '2', name: 'Tipo 3' },
-            ]
-        };
-  },
+      };
+
+    },
+    setup(){
+      const user = useAuthStore().user.user;
+      console.log(user)
+      return { user }
+    },
     methods: {
       seeServices() {
         // Obtener el nombre del lugar almacenandola en esta variable
@@ -76,12 +75,12 @@
       editProfile() {
         this.isEditable = !this.isEditable;
         this.$forceUpdate();
-        // Realizar acciones adicionales al cambiar entre modo de edición y no edición
-        // Por ejemplo, enviar una solicitud de actualización al backend
+  // Realizar acciones adicionales al cambiar entre modo de edición y no edición
+  // Por ejemplo, enviar una solicitud de actualización al backend
+        }
       }
-    }
-  };
-  </script>
+    };
+</script>
   
   <style scoped>
   .profile-view {
@@ -123,11 +122,14 @@
 
   .profile-data {
     margin-bottom: 1em;
+    text-align: justify;
+    width: 100%;
   }
   
-  .profile-data label {
+  .profile-data label, .profile-data p {
     font-family: 'Lilita One';
     font-size: large;
+    margin-left: 0;
     color: #2c3e50;
   }
 

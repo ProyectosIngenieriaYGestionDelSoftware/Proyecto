@@ -8,11 +8,16 @@
       <nav>
         <router-link to="/all-businesses">Find Businesses</router-link>
         <router-link v-if="user?.user.is_business" to="/business/edit">Edit Services</router-link>
+        <router-link v-if="user" to="/profile">Edit Profile</router-link>
       </nav>
     </div>
     <div class="auth">
-      <router-link  id="authenticate" v-if="user===null" to="/auth">Log In / Sign Up</router-link>
-      <router-link @click="logOut()" v-if="user!==null" to="/auth">Logout</router-link>
+      <router-link v-if="user===null" to="/auth">
+        <v-btn id="authenticate" class="buttonsAuth">Log In / Sign Up</v-btn>
+      </router-link>
+      <router-link @click="logOut()" v-if="user" to="/auth">
+        <v-btn class="buttonsAuth">Logout</v-btn>
+      </router-link>
     </div>
   </header>
 </template>
@@ -79,6 +84,7 @@ export default defineComponent({
 .sections {
   nav {
     padding: 0px;
+    display: flex;
   }
   
   nav a {
@@ -102,9 +108,10 @@ export default defineComponent({
 
 }
 
-.auth {
+.buttonsAuth {
+  font-family: 'Lilita One';
   background-color: #218283;
-  padding: 5px 0;
+  padding: 5px 10px;
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -112,14 +119,14 @@ export default defineComponent({
   text-decoration: none; 
 }
 
-.auth a {
+/*.auth a {
   color: #ffffff;
   text-decoration: none; 
 }
 
 .auth:hover {
   background-color: #145354;
-}
+}*/
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
