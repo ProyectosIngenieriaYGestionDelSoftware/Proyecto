@@ -7,23 +7,50 @@
         
         <v-card-text class="preview_business-address">{{ business.name }}<!--Tiene que ir el business.direction--></v-card-text>
       </v-card-item>
-      
+
+      <v-card-actions style="width: 100%; background-color: #45B4A8;">
+        <v-btn style="top: -5px; font-family: 'Lilita One', sans-serif; " append-icon="mdi-chat-processing-outline" width="50%" text="Chat" @click="showChat = !showChat"></v-btn>
+        <v-btn style="top: -5px; font-family: 'Lilita One', sans-serif;" append-icon="mdi-arrow-right" width="50%" height="100%" text="Book" @click="navigateToBusiness"></v-btn>
+      </v-card-actions>
       
     </v-card>
+
+    <v-dialog v-model="showChat">
+      <ChatView style="justify-self: center;" @closeChat="showChat = false" :business="business"></ChatView>
+    </v-dialog>
   </template>
   
   <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, ref } from 'vue';
   import { User } from '@/helper';
+import ChatView from '@/views/ChatView.vue';
   
   export default defineComponent({
     name: 'BusinessPreview',
+    components: {
+      ChatView
+    },
     props: {
       business: {
         type: Object,
         required: true
       }
+    },
+    setup(props) {
+      const showChat = ref(false);
+      console.log(props.business);
+
+      const navigateToBusiness=  (): void =>  {
+        const url = `/business/${encodeURIComponent(props.business._id)}`;
+        window.location.href = url;
+      }
+
+      return {
+        showChat,
+        navigateToBusiness
+      }
     }
+
   });
   </script>
   

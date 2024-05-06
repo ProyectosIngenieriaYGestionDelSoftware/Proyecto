@@ -1,13 +1,12 @@
 <template>
-    <v-card :title="`Chat with ${other}`" min-width="80vw" style="height: 80vh">
+    <v-card :title="`Chat with ${business.name}`" min-width="80vw" style="height: 80vh">
         <template v-slot:append>
             <v-icon size="x-large" icon="mdi-close-circle-outline" @click="closeChat()"></v-icon>
         </template>
         <div class="chat">
             <div class="messages">
 
-                <v-virtual-scroll ref="virtualScroller"  :items="messages"  item-height="10vh"
-                    style="scrollbar-width: none; left: 20px;">
+                <v-virtual-scroll ref="virtualScroller"  :items="messages"  height="60vh">
                     <template v-slot:default="message">
                         <v-row style="width: 95%; margin-top: 10px; margin-bottom: 10px;" no-gutters :align="'baseline'"
                             :justify="message.item.sender === user.email ? 'end' : 'start'">
@@ -48,7 +47,7 @@ import axios from 'axios';
 
 export default defineComponent({
     name: "Chat",
-    props : ['otherEmail'],
+    props : ['business'],
     emits: ['closeChat'],
     setup(props, ctx ) {
         const socket = useSocketStore();
@@ -67,7 +66,7 @@ export default defineComponent({
                 if(value){
                     socket.handshake({
                         userEmail : user.value.email,
-                        otherEmail : props.otherEmail
+                        otherEmail : props.business.email
                     });
                     unwatch();
                 }
@@ -100,14 +99,17 @@ export default defineComponent({
         });
 
         const sendMessage = () => {
+            
             if(textMessage.value !== ""){
                 const message = {
-                receiver: props.otherEmail,
+                receiver: props.business.email,
                 sender: user.value.email,
                 message: textMessage.value,
                 is_business: user.value.is_business,
                 chatNumber: chatNumber
             }
+
+            console.log(message);
 
             axios   
                 .post('http://localhost:3000/api/chat/sendMessage',message)
@@ -122,6 +124,14 @@ export default defineComponent({
             }
         }
 
+        const goToLastMessage = async () => {
+            console.log(virtualScroller.value)
+            await virtualScroller.value.$nextTick();
+            await virtualScroller.value.$forceUpdate();
+            setTimeout(() => virtualScroller.value.scrollToIndex(messages.value.length -1), 10);
+            setTimeout(() => virtualScroller.value.scrollToIndex(messages.value.length -1), 20);
+        }
+
         const addMessage = async (message: any) => {
             messages.value.push({
                 sender: message.sender,
@@ -129,8 +139,9 @@ export default defineComponent({
                 message: message.message!,
                 timestamp: new Date(message.timestamp!)
             });
-            await virtualScroller.value.$nextTick();
-            virtualScroller.value.scrollToIndex(messages.value.length - 1);
+            
+            await goToLastMessage();
+            
         }
         
         return {

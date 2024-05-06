@@ -18,7 +18,7 @@
         </div> -->
   
         <section class="businesses-boxes">
-          <div class="business-box" v-for="business in businesses" :key="business" @click="navigateToBusiness(business)">
+          <div class="business-box" v-for="business in businesses" :key="business">
             <BusinessPreview :business="business"></BusinessPreview>
           </div>
         </section>

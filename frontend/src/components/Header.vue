@@ -2,7 +2,7 @@
   <header class="header">
     <div class="brand" @click="goToHome">
       <img v-bind:src="require('../assets/cab_logo.png')" alt="Business Logo">
-      <h3>Click & Book</h3>
+      <h3 style="cursor: pointer">Click & Book</h3>
     </div>
     <div class="sections">
       <nav>
