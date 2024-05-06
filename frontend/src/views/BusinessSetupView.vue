@@ -11,6 +11,7 @@
             title="Delete confirmation"
         >
             <template v-slot:actions class="align-end">
+                <v-spacer></v-spacer>
                 <v-btn
                     text="Cancel"
                     @click="dialogConfirmDelete = false"
@@ -87,7 +88,7 @@ import AddService from '@/components/AddService.vue';
 
 
             const user = useAuthStore().user;
-            let services = [];
+            let services = ref([]);
             let loading = true;
 
             const dialogAddService = ref(false);
@@ -95,7 +96,7 @@ import AddService from '@/components/AddService.vue';
             if (user===null || !user.user.is_business){
                 router.push("/");
             }else{
-                services = user.user.services;
+                services.value = user.user.services;
                 loading = false;
             }
 
@@ -114,9 +115,9 @@ import AddService from '@/components/AddService.vue';
                     duration:duration,
                     price:price
                 }
-                services = user.user.services;
-                services.push(service);
-                const req = await useAuthStore().updateServices(services).then(res => {
+                services.value = user.user.services;
+                services.value.push(service);
+                const req = await useAuthStore().updateServices(services.value).then(res => {
                     closeDialog();
                 });
             }
@@ -125,7 +126,7 @@ import AddService from '@/components/AddService.vue';
             function warnRemove(service,allServices){
 
                 if(allServices){
-                    serviceToDelete.value = services;
+                    serviceToDelete.value = services.value;
                     textConfirmDelete.value = "Are you sure to delete all services?"
                 }else{
                     serviceToDelete.value = service;
@@ -137,18 +138,18 @@ import AddService from '@/components/AddService.vue';
 
 
             async function removeService(service){
-                services = user.user.services;
-                services.pop(service);
-                const req = await useAuthStore().updateServices(services).then(res => {
+                services.value = user.user.services;
+                services.value.pop(service);
+                const req = await useAuthStore().updateServices(services.value).then(res => {
                     console.log(res);
                     dialogConfirmDelete.value = false;
                 });
             }
 
             async function removeAllServices(){
-                services = [];
-                const req = await useAuthStore().updateServices(services).then(res => {
-                    console.log(services);
+                services.value = [];
+                const req = await useAuthStore().updateServices(services.value).then(res => {
+                    console.log(services.value);
                     dialogConfirmDelete.value = false;
                 });
             }

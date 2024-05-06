@@ -1,4 +1,7 @@
 <template>
+
+  <Calendar/>
+
   <div class="booking-view">
     <form class="booking-form">
       <h1 class="booking-title">Booking</h1>
@@ -23,8 +26,12 @@
 </template>
 
 <script>
+import Calendar from '@/components/Calendar.vue';
 export default {
   name: 'BookingView',
+  components:{
+    Calendar
+  },
   data() {
     return {
       selectedDate: '', // Fecha seleccionada

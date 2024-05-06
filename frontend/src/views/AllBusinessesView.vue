@@ -9,6 +9,12 @@
       <hr> </hr>
       
       <div class="businesses-container">
+
+        <p v-if="businesses.length===0">
+          "There isn't any business registered."
+        </p>
+
+
         <nav>
           <!-- <input class="nav-filter" type="text" placeholder="Search business..." v-model="searchTerm" @input="filterItems"> -->
         </nav>

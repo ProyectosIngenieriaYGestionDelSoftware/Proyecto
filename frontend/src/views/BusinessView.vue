@@ -1,10 +1,14 @@
 <template>
     <div class="business-services">
       <nav>
-        <input class="nav-filter" type="text" placeholder="Search service..." v-model="searchTerm" @input="filterItems">
+        <!-- <input class="nav-filter" type="text" placeholder="Search service..." v-model="searchTerm" @input="filterItems"> -->
       </nav>
         
       <h1 class="bussiness-services-title"> Services </h1>
+
+      <p  v-if="business&&business.services.length===0">
+        There isn't any service registered.
+      </p>
         
         <div v-if="filteredItems.length === 0" class="no-matches">
             <span class="warning-icon">&#9888;</span> No matches found.
@@ -12,7 +16,7 @@
         <div class="business-services-container">
             <ul class="business-service">
                 <li class="business-service-box" v-if="business" v-for="item in business.services" :key="item.business_service_title">
-                    <BusinessService :business="item"></BusinessService>
+                    <BusinessService :business="item" :currentUser="currentUser"></BusinessService>
                 </li>
             </ul>
         </div>
@@ -41,6 +45,9 @@
 
       const route = useRoute();
       const business = ref(); 
+
+      const currentUser = ref();
+      currentUser.value = useAuthStore().user;
     
       useAuthStore().getBusiness(route.params.id as string).then(res => {
         if(res){
@@ -53,7 +60,7 @@
       });
 
 
-      return { business }
+      return { business, currentUser }
     },
     data() {
       return {
