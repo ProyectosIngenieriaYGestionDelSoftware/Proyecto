@@ -10,26 +10,28 @@
       
       <div class="businesses-container">
         <nav>
-          <input class="nav-filter" type="text" placeholder="Search business..." v-model="searchTerm" @input="filterItems">
+          <!-- <input class="nav-filter" type="text" placeholder="Search business..." v-model="searchTerm" @input="filterItems"> -->
         </nav>
 
-        <div v-if="filteredItems.length === 0" class="no-matches">
+        <!-- <div v-if="filteredItems.length === 0" class="no-matches">
             <span class="warning-icon">&#9888;</span> No matches found.
-        </div>
+        </div> -->
   
-        <ul class="businesses-boxes">
-          <li class="business-box" v-for="item in filteredItems" :key="item.business_name" @click="navigateToBusiness(item)">
-            <BusinessPreview :business="item"></BusinessPreview>
-          </li>
-        </ul>
+        <section class="businesses-boxes">
+          <div class="business-box" v-for="business in businesses" :key="business" @click="navigateToBusiness(business)">
+            <BusinessPreview :business="business"></BusinessPreview>
+          </div>
+        </section>
       </div>
     </div>
   </template>
   
   <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
 import AdCarousel from '../components/AdCarousel.vue';
 import BusinessPreview from '@/components/BusinessPreview.vue';
+import { User } from '@/helper';
 
 interface Business {
   business_preview_image: any;
@@ -43,43 +45,40 @@ export default defineComponent({
     AdCarousel,
     BusinessPreview
   },
+
+  setup(){
+    
+    const businesses = ref([]); 
+    
+    useAuthStore().getAllBusiness().then(res => {
+      if(res){
+        businesses.value = res;
+        console.log(businesses.value);
+        
+      }else{
+        console.log("No hay empresas");
+      }
+    });
+
+
+    return { businesses }
+  },
+
   data() {
     return {
-      items: [
-        {
-          business_preview_image: require('@/assets/businesses/business1.jpeg'),
-          business_name: "Brooklyn Barber Shop Paterna",
-          business_address: "Avenida Vicente Mortes 62, Bajo A, 46980, Paterna",
-        },
-        {
-          business_preview_image: require('@/assets/businesses/business2.jpeg'),
-          business_name: "Beauty Palace",
-          business_address: "Calle Torres, 12, 35002, Las Palmas de Gran Canaria",
-        },
-        {
-          business_preview_image: require('@/assets/businesses/business3.jpeg'),
-          business_name: "Divinity Barber Shop",
-          business_address: "C.Republica Dominicana 33, Esq. Costa Rica, Local, 35010, Las Palmas de Gran Canaria",
-        },
-        {
-          business_preview_image: require('@/assets/businesses/business4.jpeg'),
-          business_name: "Organic Beauty",
-          business_address: "Calle Cirilo Moreno, 22, 35007, Las Palmas de Gran Canaria",
-        },
-      ] as Business[], // Especificamos el tipo de datos como Business[]
       searchTerm: '',
       filteredItems: [] as Business[] // Inicializamos filteredItems con el mismo tipo de datos que items
     };
   },
   methods: {
     filterItems(): void {
-      this.filteredItems = this.items.filter((item: Business) => // Especificamos el tipo de datos para 'item'
+      this.filteredItems = this.businesses.filter((item: Business) => // Especificamos el tipo de datos para 'item'
         item.business_name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     },
 
-    navigateToBusiness(item: Business): void {
-      const url = `/business/${encodeURIComponent(item.business_name)}`;
+    navigateToBusiness(item: User): void {
+      const url = `/business/${encodeURIComponent(item._id)}`;
       window.location.href = url;
     }
   },
@@ -130,15 +129,21 @@ nav {
   
   
 .businesses-boxes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 6em;
-    grid-row-gap: 2em;
-    justify-items: center;
-    align-items: baseline;
-
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 5em;
+    row-gap: 2em;
+    justify-content: center;
+    width: 100%;
     padding: 2em 6em;
     margin: 0;
+}
+
+.businesses-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .business-box {
     list-style: none;

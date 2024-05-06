@@ -11,17 +11,19 @@
         </div>
         <div class="business-services-container">
             <ul class="business-service">
-                <li class="business-service-box" v-for="item in filteredItems" :key="item.business_service_title">
+                <li class="business-service-box" v-if="business" v-for="item in business.services" :key="item.business_service_title">
                     <BusinessService :business="item"></BusinessService>
                 </li>
             </ul>
         </div>
     </div>
-  </template>
+</template>
   
-  <script lang="ts">
-  import { defineComponent } from 'vue';
-import BusinessService from '../components/BusinessService.vue';
+<script lang="ts">
+  import { useAuthStore } from '@/stores/auth';
+  import { defineComponent, ref } from 'vue';
+  import BusinessService from '../components/BusinessService.vue';
+  import { useRoute } from 'vue-router'
 
   interface BusinessInfo {
     business_service_title: string;
@@ -33,6 +35,25 @@ import BusinessService from '../components/BusinessService.vue';
     name: 'BusinessView',
     components: {
       BusinessService
+    },
+
+    setup(){
+
+      const route = useRoute();
+      const business = ref(); 
+    
+      useAuthStore().getBusiness(route.params.id as string).then(res => {
+        if(res){
+          business.value = res;
+          console.log(business.value);
+          
+        }else{
+          console.log("No hay empresas");
+        }
+      });
+
+
+      return { business }
     },
     data() {
       return {

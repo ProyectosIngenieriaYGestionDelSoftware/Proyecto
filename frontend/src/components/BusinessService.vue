@@ -1,10 +1,10 @@
 <template>
-    <div class="business-service">
-        <h3 class="business-service-title"> {{ business.business_service_title }} </h3>
-        <p class="business-service-description"> {{ business.business_service_description }} </p>
-        <p class="business-service-price"> {{ business.business_service_price }} </p>
-        <button class="btn btn-primary" @click="navigateToBooking">Book now</button>
-    </div>
+    <v-card class="business-service">
+        <v-card-title class="business-service-title"> {{ business.name }} </v-card-title>
+        <v-card-text class="business-service-description"> {{ business.description }}  </v-card-text>
+        <v-card-text class="business-service-price"> {{ business.price }} € </v-card-text>
+        <v-btn class="btn btn-primary" @click="navigateToBooking">Book now</v-btn>
+    </v-card>
   </template>
   
   <script lang="ts">
