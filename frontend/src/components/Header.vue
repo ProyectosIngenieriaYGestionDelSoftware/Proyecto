@@ -5,9 +5,8 @@
       <h3 style="cursor: pointer">Click & Book</h3>
     </div>
     <div class="sections">
-
+      <chat-alert v-if="user?.user.is_business"></chat-alert>
       <nav>
-        <chat-alert v-if="user?.user.is_business"></chat-alert>
         <router-link v-if="!user?.user.is_business" to="/all-businesses">Find Businesses</router-link>
         <router-link v-if="user?.user.is_business" to="/business/edit">Edit Services</router-link>
         <router-link v-if="user" to="/profile">Edit Profile</router-link>
@@ -88,6 +87,8 @@ export default defineComponent({
 }
 
 .sections {
+  display: flex;
+  align-items: center;
   nav {
     padding: 0px;
     display: flex;
