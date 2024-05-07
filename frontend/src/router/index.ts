@@ -42,6 +42,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'booking',
     component: () => import('@/views/BookingView.vue')
   },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/views/ProfileView.vue')
+  },
 ]
 
 const router = createRouter({
