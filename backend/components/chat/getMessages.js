@@ -1,7 +1,10 @@
 const chat_db = require('../db/dbService').getChatRepository();
+const chatMessages = require('./chatMessages');
 
-const getMessages = async (userEmail) => {
-    return await chat_db.getUserMessages(userEmail);
+const getMessages = async (chatNumber) => {
+    const result = (await chat_db.getChatMessages(chatNumber)).map(value => chatMessages.makeGetMessages(value))
+    console.log(result);
+    return result;
 }
 
 module.exports = getMessages;

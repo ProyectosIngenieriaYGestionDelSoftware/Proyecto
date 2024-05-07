@@ -9,21 +9,22 @@
       </v-card-item>
 
       <v-card-actions style="width: 100%; background-color: #45B4A8;">
-        <v-btn style="top: -5px; font-family: 'Lilita One', sans-serif; " append-icon="mdi-chat-processing-outline" width="50%" text="Chat" @click="showChat = !showChat"></v-btn>
-        <v-btn style="top: -5px; font-family: 'Lilita One', sans-serif;" append-icon="mdi-arrow-right" width="50%" height="100%" text="Book" @click="navigateToBusiness"></v-btn>
+        <v-btn class="card-button" append-icon="mdi-chat-processing-outline" width="50%" text="Chat" @click="goToChat"></v-btn>
+        <v-btn class="card-button" append-icon="mdi-arrow-right" width="50%" height="100%" text="Book" @click="navigateToBusiness"></v-btn>
       </v-card-actions>
       
     </v-card>
 
     <v-dialog v-model="showChat">
-      <ChatView style="justify-self: center;" @closeChat="showChat = false" :business="business"></ChatView>
+      <ChatView style="justify-self: center;" @closeChat="showChat = false" :other-user="business"></ChatView>
     </v-dialog>
   </template>
   
   <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { User } from '@/helper';
-import ChatView from '@/views/ChatView.vue';
+  import ChatView from '@/views/ChatView.vue';
+  import { useAuthStore } from '@/stores/auth';
+  import router from '../router/index';
   
   export default defineComponent({
     name: 'BusinessPreview',
@@ -38,6 +39,7 @@ import ChatView from '@/views/ChatView.vue';
     },
     setup(props) {
       const showChat = ref(false);
+      const user = useAuthStore().user?.user
       console.log(props.business);
 
       const navigateToBusiness=  (): void =>  {
@@ -45,9 +47,18 @@ import ChatView from '@/views/ChatView.vue';
         window.location.href = url;
       }
 
+      const goToChat = () => {
+        if(user === undefined) {
+          router.push({name:'register'});
+        }else{
+          showChat.value = true;
+        }
+      }
+
       return {
         showChat,
-        navigateToBusiness
+        navigateToBusiness,
+        goToChat
       }
     }
 
@@ -81,6 +92,11 @@ import ChatView from '@/views/ChatView.vue';
     word-break: normal;
     overflow: hidden ;
     text-overflow: ellipsis;
+  }
+
+  .card-button{
+    top: -5px; 
+    font-family: 'Lilita One', sans-serif;
   }
   </style>
   

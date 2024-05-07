@@ -5,13 +5,15 @@
       <h3 style="cursor: pointer">Click & Book</h3>
     </div>
     <div class="sections">
+
       <nav>
-        <router-link to="/all-businesses">Find Businesses</router-link>
+        <chat-alert v-if="user?.user.is_business"></chat-alert>
+        <router-link v-if="!user?.user.is_business" to="/all-businesses">Find Businesses</router-link>
         <router-link v-if="user?.user.is_business" to="/business/edit">Edit Services</router-link>
       </nav>
     </div>
     <div class="auth">
-      <router-link  id="authenticate" v-if="user===null" to="/auth">Log In / Sign Up</router-link>
+      <router-link id="authenticate" v-if="user===null" to="/auth">Log In / Sign Up</router-link>
       <router-link @click="logOut()" v-if="user!==null" to="/auth">Logout</router-link>
     </div>
   </header>
@@ -20,10 +22,14 @@
 <script lang='ts'>
 import { useAuthStore } from '@/stores/auth';
 import { defineComponent, computed } from 'vue'
+import ChatAlert from './ChatAlert.vue';
 import router from '../router'
 
 
 export default defineComponent({
+    components : {
+      ChatAlert
+    },
     setup(props, ctx) {
         const authStore = useAuthStore();
         

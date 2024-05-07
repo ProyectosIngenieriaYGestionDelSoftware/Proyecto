@@ -10,6 +10,10 @@ const chatSchema = new mongoose.Schema({
         type : String,
         required : true
     },
+    chatNumber : {
+        type : Number,
+        required : true
+    },
     message : {
         type : String,
         required : true
@@ -22,11 +26,12 @@ const chatSchema = new mongoose.Schema({
         type : Boolean,
         default : false
     },
-
+    
 
 });
 chatSchema.index({sender : 1});
 chatSchema.index({receiver : 1});
+chatSchema.index({chatNumber : 1});
 
 const ChatModel = mongoose.model("Chat",chatSchema);
 
@@ -40,14 +45,23 @@ class MongoDBChatRepository{
         return newMessaage.save();
     }
 
-    async getUserMessages(userEmail){
-        const messages = await ChatModel.find({$or: [{sender : userEmail},{receiver: userEmail}]});
+    async getChatMessages(chatNumber){
+        const messages = await ChatModel.find({chatNumber : chatNumber});
         return messages;
     }
 
-    async setReadedMessages(receiver, sender){
-        const result = await ChatModel.updateMany({$and : [{receiver : receiver},{sender: sender}]},{$set: { readed: true }});
+    async setReadedMessages(receiver, chatNumber){
+        const result = await ChatModel.updateMany({$and : [{receiver : receiver},{chatNumber: chatNumber}]},{$set: { readed: true }});
         return result;
+    }
+
+    async checkUnreadMessages(userEmail) {
+        const result = await ChatModel.findOne({$and : [{receiver : userEmail},{readed : false}]});
+        return result;
+    }
+
+    deleteChat(chatNumber) {
+        ChatModel.deleteMany({chatNumber : chatNumber});
     }
 }
 

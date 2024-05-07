@@ -1,3 +1,5 @@
+const deleteChat = require('./deleteChat');
+const findOpenChats = require('./findOpenChats');
 const getMessages = require('./getMessages');
 const sendMessage = require('./sendMessage');
 const setReadedMessages = require('./setReadedMessages')
@@ -5,5 +7,7 @@ const setReadedMessages = require('./setReadedMessages')
 module.exports = {
     getMessages,
     sendMessage,
-    setReadedMessages
+    setReadedMessages,
+    findOpenChats,
+    deleteChat
 }

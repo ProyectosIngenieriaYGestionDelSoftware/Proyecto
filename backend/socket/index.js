@@ -13,7 +13,7 @@ function createWS(server) {
         let business = null;
         let client = null;
         let user1 = null;
-        let chatNumber = 0;
+        let chatNumber = null;
         ws.on("message" , async message =>{
             
             if(handshake){
@@ -28,9 +28,11 @@ function createWS(server) {
                     return;
                 }
 
-                let userWasInConnections = false;
                 connections.forEach((value, key) =>  {
-                    userWasInConnections = value.business.email === user1.email || value.client.email === user1.email;
+                    let userWasInConnections = 
+                        (value.business.email === user1.email && value.client.email === user2.email) || 
+                        (value.business.email === user2.email && value.client.email === user1.email);
+                    
                     if(userWasInConnections) {
                         chatNumber = key;
                         if(value.business.email === user1.email ) {
@@ -38,12 +40,13 @@ function createWS(server) {
                         }else{
                             connections.get(key).client.ws = ws;
                         }
+                        console.log(chatNumber);
                         return;
                     }
                     
                 });
 
-                if(!userWasInConnections){
+                if(chatNumber === null){
                     user1.ws = ws;
                     [business, client] = user1.is_business ? [user1, user2] : [user2, user1];
                     chatNumber = connectionNumber++;
@@ -64,7 +67,7 @@ function createWS(server) {
         } );
 
         ws.on("close", () => {
-            if (user1) {
+            /*if (user1) {
               const connection = connections.get(chatNumber);
               connection.business.email === user1.email
                 ? (connection.business.ws = undefined)
@@ -75,7 +78,7 @@ function createWS(server) {
               ) {
                 connections.delete(chatNumber);
               }
-            }
+            }*/
             
         })
     }); 
@@ -86,6 +89,7 @@ function sendMessage(is_business,chatNumber,message) {
     if(isConnected(chatNumber, is_business)){
         getClient(chatNumber, is_business).send(JSON.stringify(message));
     }
+    console.log(message);
 }
 
 function isConnected(chatNumber, is_business){
@@ -107,12 +111,33 @@ function getClient(chatNumber, is_business) {
     }
 }
 
+function findOpenConnections(is_business, userEmail) {
+    const result = [];
+    const user = is_business ? 'business' : 'client';
+    connections.forEach(connection => {
+        if(connection[user].email === userEmail ){
+            result.push({
+                user : connection[user==='business' ? 'client' : 'business' ].email
+            });
+        }
+    });
 
+    return result;
+}
+
+function disconnect(chatNumber) {
+    const connection = connections.get(chatNumber);
+    connection.business.ws?.close();
+    connection.client.ws?.close();
+    connections.delete(chatNumber);
+}
 
 
 
 module.exports = { 
     createWS,
-    sendMessage
+    sendMessage,
+    findOpenConnections,
+    disconnect
 };
 

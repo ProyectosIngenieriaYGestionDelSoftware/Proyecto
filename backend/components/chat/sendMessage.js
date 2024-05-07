@@ -6,7 +6,7 @@ const sendMessage = (data) => {
     console.log(data);
     const message = chatMessages.makeSendMessage(data);
     socket.sendMessage(data.is_business,data.chatNumber,message);
-    //chat_db.createMessage(message);
+    chat_db.createMessage({...message, chatNumber : data.chatNumber});
 
     return message;
     

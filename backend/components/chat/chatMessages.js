@@ -1,5 +1,6 @@
 const RECEIVED = "received";
 const READED = "readed";
+const DELETED = 'deleted';
 
 const makeSendMessage = (data) => {
     return message = {
@@ -19,7 +20,17 @@ const makeReadedMessage = (data) => {
         action : READED
     }
 }
+
+const makeGetMessages = (data) => {
+    return {
+        sender : data.sender,
+        readed : data.readed,
+        message : data.message,
+        timestamp : data.timestamp,
+    }
+}
 module.exports = {
     makeReadedMessage,
-    makeSendMessage
+    makeSendMessage,
+    makeGetMessages
 }

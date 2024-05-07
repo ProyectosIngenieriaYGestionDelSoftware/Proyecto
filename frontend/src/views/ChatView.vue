@@ -1,5 +1,5 @@
 <template>
-    <v-card :title="`Chat with ${business.name}`" min-width="80vw" style="height: 80vh">
+    <v-card :title="`Chat with ${otherUser.name}`" min-width="80vw" style="height: 80vh">
         <template v-slot:append>
             <v-icon size="x-large" icon="mdi-close-circle-outline" @click="closeChat()"></v-icon>
         </template>
@@ -44,10 +44,12 @@ import { useSocketStore } from '@/stores/socket';
 import { SocketMessage } from '../helper';
 import {useAuthStore} from '@/stores/auth';
 import axios from 'axios';
+import { DOMAIN_BACKEND } from '../config';
+
 
 export default defineComponent({
     name: "Chat",
-    props : ['business'],
+    props : ['otherUser'],
     emits: ['closeChat'],
     setup(props, ctx ) {
         const socket = useSocketStore();
@@ -57,8 +59,7 @@ export default defineComponent({
         const virtualScroller = ref();
         const textMessage = ref("");
         let chatNumber = 0;
-
-        console.log(props);
+        const messages = ref<Array<Message>>([]);
 
         onBeforeMount(() => {
             socket.connect();
@@ -66,11 +67,15 @@ export default defineComponent({
                 if(value){
                     socket.handshake({
                         userEmail : user.value.email,
-                        otherEmail : props.business.email
+                        otherEmail : props.otherUser.email
                     });
+                    
+                }else{
+                    closeChat();
                     unwatch();
                 }
             });
+            
         });
         
 
@@ -85,41 +90,71 @@ export default defineComponent({
             socket.disconnect();
         });
 
-        const messages = ref<Array<Message>>([
-        ]);
+        
 
         watch(() => socket.message, async (newMessage : unknown) => {
             const message = (newMessage as SocketMessage);
             console.log(message);
-            if(message.action === 'received'){
+            if(message.action === 'received') {
                 addMessage(message);
-            } else if(message.action = 'connected'){
-                chatNumber = message.chatNumber!
+                axios.put(`${DOMAIN_BACKEND}/chat/setReadedMessages`,{
+                    sender : props.otherUser.email,
+                    receiver : user.value.email,
+                    is_business : user.value.is_business,
+                    chatNumber : chatNumber
+                });
+            } else if(message.action === 'connected') {
+                chatNumber = message.chatNumber!;
+                axios
+                    .get(`${DOMAIN_BACKEND}/chat/getMessages`,{
+                        params : {
+                            chatNumber : chatNumber
+                        }
+                    })
+                    .then(response => {
+                        response.data.forEach((element : Message) => {
+                            addMessage(element);
+                        });
+
+                        axios.put(`${DOMAIN_BACKEND}/chat/setReadedMessages`,{
+                            sender : props.otherUser.email,
+                            receiver : user.value.email,
+                            chatNumber : chatNumber,
+                            is_business : user.value.is_business
+                        });
+                        
+                    })
+            } else if(message.action === 'readed') {
+                messages.value.forEach(message => {
+                    if(message.sender === user.value.email){
+                        message.readed = true;
+                    }
+                });
             }
         });
 
         const sendMessage = () => {
-            
-            if(textMessage.value !== ""){
+
+            if (textMessage.value !== "") {
                 const message = {
-                receiver: props.business.email,
-                sender: user.value.email,
-                message: textMessage.value,
-                is_business: user.value.is_business,
-                chatNumber: chatNumber
-            }
+                    receiver: props.otherUser.email,
+                    sender: user.value.email,
+                    message: textMessage.value,
+                    is_business: user.value.is_business,
+                    chatNumber: chatNumber
+                }
 
-            console.log(message);
+                console.log(message);
 
-            axios   
-                .post('http://localhost:3000/api/chat/sendMessage',message)
-                .then((response) => {
-                    addMessage(response.data);
-                    textMessage.value = "";
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+                axios
+                    .post(`${DOMAIN_BACKEND}/chat/sendMessage`, message)
+                    .then((response) => {
+                        addMessage(response.data);
+                        textMessage.value = "";
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
 
             }
         }
