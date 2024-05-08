@@ -26,7 +26,7 @@ router.post("/login", async function (req, res, next) {
         if(same){
             const token = auth.generateToken(email, []);
             const {_id,__v, ...user_data} = user._doc;
-            res.status(200).json({ user : user_data, token });
+            res.status(200).json({ id:_id,user : user_data, token });
         }else{
             res.status(401).json({ message: "Inorrect Credentials" });
         }

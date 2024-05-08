@@ -1,26 +1,62 @@
 <template>
-    <div class="business-services">
-      <nav>
-        <!-- <input class="nav-filter" type="text" placeholder="Search service..." v-model="searchTerm" @input="filterItems"> -->
-      </nav>
-        
-      <h1 class="bussiness-services-title"> Services </h1>
+  <div class="business-services">
+    <nav>
+      <!-- <input class="nav-filter" type="text" placeholder="Search service..." v-model="searchTerm" @input="filterItems"> -->
+    </nav>
 
-      <p  v-if="business&&business.services.length===0">
-        There isn't any service registered.
-      </p>
-        
-        <div v-if="filteredItems.length === 0" class="no-matches">
-            <span class="warning-icon">&#9888;</span> No matches found.
-        </div>
+    <h1 class="bussiness-services-title"></h1>
+
+    <v-stepper v-if="currentUser" :next-text="stepper==3?'Book':'Next'" :onUpdate:modelValue="onUpdate" :items="['Select service', 'Select date','Select hour','Confirmation']" v-model="stepper" style="width: 80%;">
+      <template v-slot:item.1>
         <div class="business-services-container">
-            <ul class="business-service">
-                <li class="business-service-box" v-if="business" v-for="item in business.services" :key="item.business_service_title">
-                    <BusinessService :business="item" :currentUser="currentUser"></BusinessService>
-                </li>
-            </ul>
+            <div class="business-service-box" v-if="business" v-for="item in business.services"
+              :key="item.business_service_title" @click="nextStep(item)">
+              <BusinessService :business="item" :currentUser="currentUser"></BusinessService>
+          </div>
         </div>
+      </template>
+
+      <template v-slot:item.2>
+        <v-stepper-window style="justify-content: center; display: flex">
+          <v-date-picker color="primary" v-model="date"></v-date-picker>
+        </v-stepper-window>
+        
+      </template>
+
+      <template v-slot:item.3>
+        <v-stepper-window style="justify-content: center; display: flex">
+          <v-time-picker color="primary" format="24hr" v-model="time"></v-time-picker>
+        </v-stepper-window>
+        <!-- <v-btn @click="book">Book</v-btn> -->
+      </template>
+
+      <template v-slot:item.4>
+        <v-stepper-window style="justify-content: center; display: flex">
+          <h1>Reservation completed for service {{ selectedService.name }}</h1>
+        </v-stepper-window>
+        <v-spacer></v-spacer>
+        <v-btn to="/" style="margin: 10px;">Go Back</v-btn>
+      </template>
+
+    </v-stepper>
+
+    <div v-if="!currentUser" class="business-services-container">
+      <ul class="business-service">
+        <li class="business-service-box" v-if="business" v-for="item in business.services"
+          :key="item.business_service_title" @click="nextStep(item)">
+          <BusinessService :business="item" :currentUser="currentUser"></BusinessService>
+        </li>
+      </ul>
     </div>
+
+
+
+    <p v-if="business&&business.services.length===0">
+      There isn't any service registered.
+    </p>
+
+
+  </div>
 </template>
   
 <script lang="ts">
@@ -28,6 +64,7 @@
   import { defineComponent, ref } from 'vue';
   import BusinessService from '../components/BusinessService.vue';
   import { useRoute } from 'vue-router'
+import router from '@/router';
 
   interface BusinessInfo {
     business_service_title: string;
@@ -42,6 +79,8 @@
     },
 
     setup(){
+
+      let stepper = ref(1);
 
       const route = useRoute();
       const business = ref(); 
@@ -59,46 +98,44 @@
         }
       });
 
+      let selectedService= ref();
+      let date = ref();
+      let time = ref();
 
-      return { business, currentUser }
-    },
-    data() {
-      return {
-        items: [
-            {
-              business_service_title: "Haircut",
-              business_service_description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-              business_service_price: "14.00€",
-            },
-            {
-              business_service_title: "Pedicure",
-              business_service_description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-              business_service_price: "14.00€",
-            },
-            {
-              business_service_title: "Shave",
-              business_service_description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-              business_service_price: "14.00€",
-            },
-            {
-              business_service_title: "Nail Polish",
-              business_service_description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-              business_service_price: "14.00€",
-            },
-        ] as BusinessInfo[],
-        searchTerm: '',
-        filteredItems: [] as BusinessInfo[]
-      };
-    },
-    methods: {
-      filterItems(): void {
-        this.filteredItems = this.items.filter((item: BusinessInfo) => 
-          item.business_service_title.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-      },
-    },
-    created() {
-      this.filterItems();
+      const nextStep = (service:any) => {
+        selectedService.value = service;
+        
+        stepper.value=2;
+      }
+
+      const onUpdate = () => {
+        if(stepper.value==3){
+          book();
+        }
+      }
+
+      const book = () => {
+        const fecha = new Date(date.value);
+        const hora = time.value;
+
+        console.log(date,hora)
+
+        const partesHora = hora.split(':');
+        const horaActualizada = new Date(fecha);
+        horaActualizada.setHours(partesHora[0]);
+        horaActualizada.setMinutes(partesHora[1]);
+        
+        
+        useAuthStore().newReservation(currentUser.value.id,route.params.id as string,selectedService.value,horaActualizada).then(res => {
+          if(res==201) {
+            stepper.value=4;
+          }
+        })
+      }
+
+
+      
+      return { business, currentUser, stepper, nextStep, book, date , time, selectedService, onUpdate}
     }
   });
   </script>
@@ -119,7 +156,11 @@
 
   .business-services-container {
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
     justify-content: center;
+    row-gap: 2em;
+    column-gap: 2em;
   }
 
   .business-service {
@@ -177,5 +218,82 @@ nav {
       width: 80%;
     }
   }
+
+  .booking-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.booking-form {
+  background-size: contain;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 1em;
+  align-self: center;
+}
+
+.booking-title {
+  font-family: 'Alfa Slab One', sans-serif;
+  color:#45b4a8;
+  text-shadow: 1px 1px 1px #2c3e50;
+}
+
+.booking-inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: start flex;
+  
+  font-family: 'Playtipi';
+  font-size: large;
+}
+
+.booking-inputs * {
+  margin-bottom: 2em;
+}
+
+.booking-calendar {
+  color: #2c3e50;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.booking-calendar::selection {
+  background-color: #45b4a8;
+  color: #fff;
+}
+
+.custom-select {
+  color: #2c3e50;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.custom-select option {
+  color: #2c3e50;
+  background-color: #f0f0f0;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #45b4a8;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;  
+  width: auto;
+}
+
+button:hover {
+  background-color: #145354;
+}
 
 </style>

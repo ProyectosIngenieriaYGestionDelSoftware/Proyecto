@@ -3,7 +3,7 @@
         <v-card-title class="business-service-title"> {{ business.name }} </v-card-title>
         <v-card-text class="business-service-description"> {{ business.description }}  </v-card-text>
         <v-card-text class="business-service-price"> {{ business.price }} € </v-card-text>
-        <v-btn :disabled="currentUser==null" class="btn btn-primary" @click="navigateToBooking">Book now</v-btn>
+        <!-- <v-btn :disabled="currentUser==null" class="btn btn-primary" @click="navigateToBooking">Book now</v-btn> -->
         <v-card-text class="business-service-description" v-if="currentUser==null">You need to be registered to make a booking.</v-card-text>
     </v-card>
   </template>
@@ -41,6 +41,8 @@
     border-radius: 5px;
     padding: 20px;
     margin-bottom: 20px;
+    width: 200px;
+    height: 200px;
   }
 
   .business-service-title {

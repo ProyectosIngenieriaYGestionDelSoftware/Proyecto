@@ -9,6 +9,7 @@
       <nav>
         <router-link v-if="!user?.user.is_business" to="/all-businesses">Find Businesses</router-link>
         <router-link v-if="user?.user.is_business" to="/business/edit">Edit Services</router-link>
+        <router-link v-if="user?.user.is_business" to="/business/reservations">View Reservations</router-link>
         <router-link v-if="user" to="/profile">Edit Profile</router-link>
       </nav>
     </div>
@@ -40,6 +41,7 @@ export default defineComponent({
         //console.log(authStore.user);
         
         const user = computed(() => authStore.user);
+        
 
 
         const unsuscribe = authStore.$subscribe((mutation)=>{})

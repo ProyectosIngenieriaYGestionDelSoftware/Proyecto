@@ -1,6 +1,6 @@
 <template>
 
-  <Calendar/>
+  
 
   <div class="booking-view">
     <form class="booking-form">
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Calendar from '@/components/Calendar.vue';
+
 export default {
   name: 'BookingView',
   components:{

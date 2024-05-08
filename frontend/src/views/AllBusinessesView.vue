@@ -59,7 +59,6 @@ export default defineComponent({
     useAuthStore().getAllBusiness().then(res => {
       if(res){
         businesses.value = res;
-        console.log(businesses.value);
         
       }else{
         console.log("No hay empresas");

@@ -25,6 +25,7 @@ export type SocketMessage = {
 
 export interface UserRequest {
     message:string,
+    id:string,
     user:User,
     token:string
 }
@@ -45,4 +46,11 @@ export interface Service {
     description:string,
     duration:number,
     price:number
+}
+
+export interface Reservation {
+    id_costumer:number,
+    id_business:number,
+    service:Service,
+    date:Date
 }

@@ -7,11 +7,12 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { VCalendar } from 'vuetify/labs/VCalendar'
+import { VTimePicker } from 'vuetify/labs/VTimePicker'
 
 export default createVuetify(
   // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
   {
-    components:{components,VCalendar},
+    components:{components,VCalendar,VTimePicker},
     directives,
     theme:{
       themes:{

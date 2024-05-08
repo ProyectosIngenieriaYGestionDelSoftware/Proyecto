@@ -11,6 +11,45 @@ export const useAuthStore = defineStore('user',{
     actions: {
 
 
+      async getReservations(_id:string){
+        let requestOptions = {
+          method:'GET',
+          headers:{'Content-Type': 'application/json'},
+        }
+
+        return await fetch(DOMAIN_BACKEND + '/get-reservations/'+_id,requestOptions).then(async res => {
+          return await res.json();
+        }).catch(error => {
+          console.log('There was a problem with the network request: ' + error);
+          return false;
+        });
+      },
+
+      async newReservation(id_costumer:string,id_business:string,service:Service,date:Date){
+
+        const requestData = {
+          id_costumer:id_costumer,
+          id_business:id_business,
+          service:service,
+          date:date
+        };
+
+
+        let requestOptions = {
+          method:'POST',
+          headers:{'Content-Type': 'application/json'},
+          body: JSON.stringify(requestData)
+        }
+
+        return await fetch(DOMAIN_BACKEND + '/new-reservation/',requestOptions).then(async res => {
+          return res.status;
+        }).catch(error => {
+          console.log('There was a problem with the network request: ' + error);
+          return false;
+        });
+      },
+
+
       async getBusiness(_id:string){
 
         let requestOptions = {
