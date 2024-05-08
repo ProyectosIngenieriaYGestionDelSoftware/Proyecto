@@ -10,31 +10,45 @@
       <v-form class="profile-info">
         <div class="profile-data">
           <p>
-            Is it a Business?: 
+            Is it a Business?:
             <v-icon icon="mdi-check-bold" v-if="user.is_business" color="success"></v-icon>
-            <v-icon icon="mdi-close-thick" v-if="!user.is_business" color="error"></v-icon> 
+            <v-icon icon="mdi-close-thick" v-if="!user.is_business" color="error"></v-icon>
           </p>
         </div>
-        <div class="profile-data">
-          <label for="name">Name: </label>
-          <v-text-field :disabled="!isEditable" variant="solo" v-model="user.name" @update:modelValue="addChangedParam('name')"></v-text-field>
+        <div id="textFieldInfo">
+          <div class="profile-data">
+            <div>
+              <label for="name">Name: </label>
+              <v-text-field :disabled="!isEditable" variant="solo" v-model="user.name"
+                @update:modelValue="addChangedParam('name')"></v-text-field>
+              </div>
+            <div>
+              <label for="email">E-mail: </label>
+              <v-text-field disabled variant="solo" v-model="user.email"></v-text-field>
+            </div>
+          </div>
+          <div class="profile-data">
+            <div>
+              <label for="phone">Phone Number: </label>
+              <v-text-field variant="solo" :disabled="!isEditable" v-model="user.phone_number"
+                @update:modelValue="addChangedParam('phone_number')"></v-text-field>
+              </div>
+            <div>
+              <label for="type">Type of business: </label>
+              <v-select variant="solo" :items="types" :disabled="!isEditable" v-model="user.type"
+                @update:modelValue="addChangedParam('type')"></v-select>
+            </div>
+          </div>
+          <div class="profile-data" v-if="user.is_business">
+          <div>
+            <label for="location">Location: </label>
+            <v-text-field variant="solo" v-model="user.direction" :disabled="!isEditable"
+              @update:modelValue="addChangedParam('direction')"></v-text-field>
+            </div>
+
+          </div>
         </div>
-        <div class="profile-data">
-          <label for="email">E-mail: </label>
-          <v-text-field disabled variant="solo" v-model="user.email"></v-text-field>
-        </div>
-        <div class="profile-data" >
-          <label for="phone">Phone Number: </label>
-          <v-text-field variant="solo" :disabled="!isEditable" v-model="user.phone_number" @update:modelValue="addChangedParam('phone_number')"></v-text-field>
-        </div>
-        <div class="profile-data" v-if="user.is_business">
-          <label for="type">Type of business: </label>
-          <v-select variant="solo" :items="types" :disabled="!isEditable" v-model="user.type" @update:modelValue="addChangedParam('type')"></v-select>
-        </div>
-        <div class="profile-data" v-if="user.is_business">
-          <label for="location">Location: </label>
-          <v-text-field variant="solo" v-model="user.direction" :disabled="!isEditable" @update:modelValue="addChangedParam('direction')"></v-text-field>
-        </div>
+
         <div class="profile-buttons">
           <v-btn type="button" id="profile-edit-button" @click="buttonAction">{{ isEditable ? 'Save' : 'Edit'
             }}</v-btn>
@@ -126,6 +140,10 @@ export default {
 </script>
   
   <style scoped>
+  #textFieldInfo{
+    display: flex;
+    flex-wrap: wrap;
+  }
   .profile-view {
     display: flex;
     flex-direction: column;
@@ -165,8 +183,15 @@ export default {
 
   .profile-data {
     margin-bottom: 1em;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    align-items: stretch;
+    justify-content: space-between;
+    
     text-align: justify;
     width: 100%;
+    
   }
   
   .profile-data label, .profile-data p {
@@ -176,7 +201,7 @@ export default {
     color: #2c3e50;
   }
 
-  .profile-data input, #type {
+  .profile-data v-text-field, #type {
     font-family: 'Playtipi';
     font-size: large;
     margin-left: 0.2em;
@@ -194,8 +219,10 @@ export default {
 
 
   .profile-buttons {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap:1em;
   }
   
   button {
