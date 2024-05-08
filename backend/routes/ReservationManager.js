@@ -4,7 +4,7 @@ const db = require("../components/db/dbService");
 const reservation_db = db.getReservationRepository();
 
 router.post("/new-reservation", async function (req, res, next){
-    const {id_costumer, id_business, service, resource, date, status} = req.body;
+    const {id_costumer, id_business, service, date} = req.body;
     let reservation;
 
     try {
@@ -12,9 +12,7 @@ router.post("/new-reservation", async function (req, res, next){
             id_costumer: id_costumer,
             id_business: id_business,
             service: service,
-            resource: resource,
-            date: date,
-            status: status
+            date: date
         });
         console.log(reservation);
 
