@@ -54,11 +54,21 @@ export default defineComponent({
 
   setup(){
     
-    const businesses = ref([]); 
+    const businesses = ref<Business[]>([]);
+
+    const businessesPhotos = [
+      require("@/assets/businesses/business1.jpeg"), // Reemplacé las rutas relativas con require
+      require("@/assets/businesses/business2.jpeg"),
+      require("@/assets/businesses/business3.jpeg"),
+      require("@/assets/businesses/business4.jpeg")
+    ];
     
     useAuthStore().getAllBusiness().then(res => {
       if(res){
         businesses.value = res;
+        businesses.value.forEach((business, index) => { // Iteré sobre el array de negocios
+          business.business_preview_image = businessesPhotos[index % businessesPhotos.length]; // Asigné una imagen de forma cíclica
+        });
         
       }else{
         console.log("No hay empresas");

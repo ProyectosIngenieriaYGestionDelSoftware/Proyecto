@@ -1,7 +1,7 @@
 <template>
     <v-card class="preview_business-container" width="400" height="400">
-      <!-- <v-img aspect-ratio="4/3" height="300" width="400" cover class="preview_business-img" :src="business.business_preview_image" :alt="business.business_name"></v-img> -->
-      <v-img aspect-ratio="4/3" height="300" width="400" cover class="preview_business-img" src="@/assets/businesses/business1.jpeg" :alt="business.business_name"></v-img>
+      <v-img aspect-ratio="4/3" height="300" width="400" cover class="preview_business-img" :src="business.business_preview_image" :alt="business.business_name"></v-img>
+      <!-- <v-img aspect-ratio="4/3" height="300" width="400" cover class="preview_business-img" src="@/assets/businesses/business1.jpeg" :alt="business.business_name"></v-img> -->
       <v-card-item>
         <v-card-title class="preview_business-name">{{ business.name }}</v-card-title>
         
