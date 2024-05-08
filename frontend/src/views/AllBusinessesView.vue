@@ -24,7 +24,7 @@
         </div> -->
   
         <section class="businesses-boxes">
-          <div class="business-box" v-for="business in businesses" :key="business">
+          <div class="business-box" v-for="business in businesses">
             <BusinessPreview :business="business"></BusinessPreview>
           </div>
         </section>
