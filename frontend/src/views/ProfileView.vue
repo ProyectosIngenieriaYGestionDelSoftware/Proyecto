@@ -4,7 +4,7 @@
 
     <v-card class="profile-container">
       <div class="profile-box">
-        <img class="profile-img" :src="image" :alt="name"></img>
+        <img class="profile-img" :src="image" :alt="user.name"></img>
       </div>
 
       <v-form class="profile-info">
@@ -17,7 +17,7 @@
         </div>
         <div class="profile-data">
           <label for="name">Name: </label>
-          <v-text-field variant="solo" v-model="user.name"></v-text-field>
+          <v-text-field :disabled="!isEditable" variant="solo" v-model="user.name" @update:modelValue="addChangedParam('name')"></v-text-field>
         </div>
         <div class="profile-data">
           <label for="email">E-mail: </label>
@@ -25,18 +25,18 @@
         </div>
         <div class="profile-data" >
           <label for="phone">Phone Number: </label>
-          <v-text-field variant="solo" v-model="user.phone_number"></v-text-field>
+          <v-text-field variant="solo" :disabled="!isEditable" v-model="user.phone_number" @update:modelValue="addChangedParam('phone_number')"></v-text-field>
         </div>
         <div class="profile-data" v-if="user.is_business">
           <label for="type">Type of business: </label>
-          <v-select variant="solo"></v-select>
+          <v-select variant="solo" :items="types" :disabled="!isEditable" v-model="user.type" @update:modelValue="addChangedParam('type')"></v-select>
         </div>
         <div class="profile-data" v-if="user.is_business">
           <label for="location">Location: </label>
-          <v-text-field variant="solo" v-model="user.direction"></v-text-field>
+          <v-text-field variant="solo" v-model="user.direction" :disabled="!isEditable" @update:modelValue="addChangedParam('direction')"></v-text-field>
         </div>
         <div class="profile-buttons">
-          <v-btn type="button" id="profile-edit-button" @click="editProfile">{{ isEditable ? 'Save' : 'Edit'
+          <v-btn type="button" id="profile-edit-button" @click="buttonAction">{{ isEditable ? 'Save' : 'Edit'
             }}</v-btn>
           <v-btn id="profile-services-button" v-if="user.is_business" @click="seeServices">SEE SERVICES</v-btn>
         </div>
@@ -46,40 +46,83 @@
 </template>
   
 <script>
+import { typeBusiness } from "@/helper"
+import { useAuthStore } from '@/stores/auth';
+import { ref } from 'vue';
+import axios from "axios";
+import { DOMAIN_BACKEND } from "@/config";
 
-  import { useAuthStore } from '@/stores/auth';
+export default {
+  name: 'ProfileView',
+  data() {
+    return {
+      image: require('@/assets/businesses/business2.jpeg'),
 
-  export default {
-    name: 'ProfileView',
-    data() {
-      return {
-        image: require('@/assets/businesses/business2.jpeg'),
-
-      };
-
-    },
-    setup(){
-      const user = useAuthStore().user.user;
-      console.log(user)
-      return { user }
-    },
-    methods: {
-      seeServices() {
-        // Obtener el nombre del lugar almacenandola en esta variable
-        const name = 'Beauty Palace'; // Este valor puede ser dinámico, dependiendo de tu implementación
-        // Codificar el nombre del lugar para asegurarse de que sea válido en una URL
-        const encodedName = encodeURIComponent(name);
-        // Redirigir a la página de servicios con el nombre del lugar en la URL
-        this.$router.push(`/business/${encodedName}`);
-      },
-      editProfile() {
-        this.isEditable = !this.isEditable;
-        this.$forceUpdate();
-  // Realizar acciones adicionales al cambiar entre modo de edición y no edición
-  // Por ejemplo, enviar una solicitud de actualización al backend
-        }
-      }
     };
+
+  },
+  setup() {
+
+    const user = ref(useAuthStore().user.user);
+    const types = ref(Object.values(typeBusiness));
+    const isEditable = ref(false);
+    const changedParams = [];
+
+    const addChangedParam = (param) => {
+      changedParams.push(param);
+    }
+
+    const buttonAction = async () => {
+      if (!isEditable.value) {
+        isEditable.value = true;
+        return;
+      }
+
+      console.log(user);
+
+      const newData = {};
+      changedParams.forEach(element => {
+        newData[element] = user.value[element];
+        const storageUser = JSON.parse(localStorage.getItem('user'));
+        storageUser.user[element] = user.value[element];
+        localStorage.setItem('user', JSON.stringify(storageUser));
+      });
+
+      await axios
+        .put(`${DOMAIN_BACKEND}/update-user`, {
+          email: user.value.email,
+          newData
+        }).then(() => {
+          
+        });
+      
+      
+
+      isEditable.value = false;
+    }
+
+    const seeServices = () => {
+      // Obtener el nombre del lugar almacenandola en esta variable
+      const name = 'Beauty Palace'; // Este valor puede ser dinámico, dependiendo de tu implementación
+      // Codificar el nombre del lugar para asegurarse de que sea válido en una URL
+      const encodedName = encodeURIComponent(name);
+      // Redirigir a la página de servicios con el nombre del lugar en la URL
+      this.$router.push(`/business/${encodedName}`);
+    }
+    // Realizar acciones adicionales al cambiar entre modo de edición y no edición
+    // Por ejemplo, enviar una solicitud de actualización al backend
+    console.log(user)
+    return {
+      user,
+      types,
+      isEditable,
+      buttonAction,
+      seeServices,
+      addChangedParam
+    }
+  }
+}
+
 </script>
   
   <style scoped>

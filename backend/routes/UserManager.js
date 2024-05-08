@@ -50,6 +50,7 @@ router.get("/get-businesses", async function (req, res, next) {
 router.get('/get-business/:id',async function(req,res,next){
 
     const _id = req.params.id;
+    console.log(_id);
 
     try{
         business = await user_db.getUserById(_id);
