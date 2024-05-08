@@ -4,11 +4,16 @@ const ReservationModel = mongoose.model('Reservation', {
     id: mongoose.Types.ObjectId,
     id_costumer: mongoose.Types.ObjectId,
     id_business: mongoose.Types.ObjectId,
-    service: Number,
-    resource: Number,
-    date: Date,
-    status: String
+    service: {
+        name: String,
+        description: String,
+        duration: Number,
+        price: Number
+    },
+    date: Date
 });
+
+
 
 class MongoDBReservationRepository {
     async createReservation(reservationData){
@@ -26,6 +31,10 @@ class MongoDBReservationRepository {
 
     async deleteReservation(reservationId) {
         return ReservationModel.findByIdAndDelete(reservationId);
+    }
+
+    async getReservations(id_business) {
+        return ReservationModel.find({ id_business: id_business });
     }
 }
 
