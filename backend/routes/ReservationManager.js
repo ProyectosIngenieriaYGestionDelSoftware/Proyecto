@@ -49,11 +49,12 @@ router.delete("/delete-reservation", async function (req, res, next) {
     }
 });
 
-router.get("/get-reservations", async function (req, res, next) {
-    const id_business = req.params.id_business;
+router.get("/get-reservations/:id", async function (req, res, next) {
+    const id_business = req.params.id;
+    console.log(id_business);
     try {
         reservations = await reservation_db.getReservations(id_business);
-
+        console.log(reservations);
         res.status(200).json(reservations);
     } catch (error) {
         res.status(500).json({ message: "Error getting reservations of the business with the id: " + id_business });
