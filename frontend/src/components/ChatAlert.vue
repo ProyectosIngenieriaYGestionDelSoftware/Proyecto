@@ -9,11 +9,10 @@
                 <v-list-item-title v-if="chats.length == 0">
                     No opened chats
                 </v-list-item-title>
-                <v-badge inline dot color="red">
-                    <v-list-item v-for="chatUser in chats" @click="showChatWith(chatUser)">
-                        Chat with {{ chatUser.name }}
-                    </v-list-item>
-                </v-badge>
+                
+                <v-list-item v-for="chatUser in chats" @click="showChatWith(chatUser)">
+                    Chat with {{ chatUser.name }}
+                </v-list-item>
 
             </v-list>
         </v-menu>
