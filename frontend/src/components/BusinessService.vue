@@ -41,7 +41,7 @@
     border-radius: 5px;
     padding: 20px;
     margin-bottom: 20px;
-    width: 200px;
+    width: 300px;
     height: 200px;
   }
 

@@ -70,7 +70,7 @@ export default {
   name: 'ProfileView',
   data() {
     return {
-      image: require('@/assets/businesses/business2.jpeg'),
+      image: require('@/assets/businesses/business1.jpeg'),
 
     };
 

@@ -34,6 +34,7 @@ export default {
         const loadReservations = () => {
             useAuthStore().getReservations(useAuthStore().user.id)
                 .then(res => {
+                    console.log(useAuthStore().user)
                     reservations.value = res.map(event => ({
                         title:event.service.name,
                         name:event.service.name,
